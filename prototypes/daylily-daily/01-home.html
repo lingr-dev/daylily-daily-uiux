@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>萱草日签 - 首页原型</title>
+  <link id="theme-css" rel="stylesheet" href="themes/default.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: 'rgb(var(--brand-primary) / <alpha-value>)',
+              secondary: 'rgb(var(--brand-secondary) / <alpha-value>)',
+              'primary-muted': 'rgb(var(--brand-primary-muted) / <alpha-value>)',
+            },
+            surface: {
+              base: 'rgb(var(--surface-base) / <alpha-value>)',
+              container: 'rgb(var(--surface-container) / <alpha-value>)',
+              elevated: 'rgb(var(--surface-elevated) / <alpha-value>)',
+            },
+            content: {
+              primary: 'rgb(var(--content-primary) / <alpha-value>)',
+              secondary: 'rgb(var(--content-secondary) / <alpha-value>)',
+              inverse: 'rgb(var(--content-inverse) / <alpha-value>)',
+            },
+            border: {
+              subtle: 'rgb(var(--border-subtle) / <alpha-value>)',
+            },
+            feedback: {
+              success: 'rgb(var(--feedback-success) / <alpha-value>)',
+              'success-bg': 'rgb(var(--feedback-success-bg) / <alpha-value>)',
+              'success-text': 'rgb(var(--feedback-success-text) / <alpha-value>)',
+              warning: 'rgb(var(--feedback-warning) / <alpha-value>)',
+              'warning-bg': 'rgb(var(--feedback-warning-bg) / <alpha-value>)',
+              'warning-text': 'rgb(var(--feedback-warning-text) / <alpha-value>)',
+            }
+          },
+          boxShadow: {
+            'brand-sm': '0 2px 4px -1px rgb(var(--shadow-color) / 0.06), 0 1px 2px -1px rgb(var(--shadow-color) / 0.04)',
+            'brand-md': '0 4px 6px -1px rgb(var(--shadow-color) / 0.1), 0 2px 4px -2px rgb(var(--shadow-color) / 0.05)',
+            'hero': '0 20px 50px -12px rgb(var(--brand-primary) / 0.3)',
+          },
+          borderRadius: {
+            '4xl': '32px',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 交互遮罩 */
+    .active-overlay { position: relative; overflow: hidden; }
+    .active-overlay::after { content: ''; position: absolute; inset: 0; background-color: rgba(0,0,0,0); transition: background-color 0.1s; pointer-events: none; }
+    .active-overlay:active::after { background-color: rgba(0,0,0,0.08); }
+    
+    /* 隐藏滚动条 */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* 模拟微信小程序的弹窗和动效 */
+    .btn-bounce { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .btn-bounce:active { transform: scale(0.92); }
+  </style>
+</head>
+<body class="bg-neutral-100 flex items-center justify-center min-h-screen font-sans antialiased text-[#4A443F]">
+
+  <!-- 移动端模拟容器 -->
+  <!-- 使用微暖的全局背景色 #F9F7F3 (宣纸色感) -->
+  <div class="relative w-full max-w-[375px] h-[812px] bg-[#F9F7F3] shadow-2xl overflow-hidden flex flex-col border-[8px] border-neutral-900 rounded-[50px]">
+    
+    <!-- 1. 微信小程序原生导航栏 (Standard NavBar) -->
+    <div class="shrink-0 z-50 bg-[#F9F7F3]/80 backdrop-blur-md">
+      <!-- 状态栏占位 -->
+      <div class="h-11 w-full"></div>
+      <!-- 标题栏 -->
+      <div class="h-11 w-full flex items-center justify-between px-4 relative border-b border-black/5">
+        <div class="w-20"></div>
+        <h2 class="text-[17px] font-bold text-[#2D2926]">萱草日签</h2>
+        <!-- 胶囊按钮模拟 -->
+        <div class="w-[87px] h-8 bg-black/5 rounded-full border border-black/5 flex items-center justify-around px-2 py-1 opacity-40">
+           <div class="w-1.5 h-1.5 rounded-full bg-black"></div>
+           <div class="w-1 h-1 rounded-full bg-black"></div>
+           <div class="w-[1px] h-3 bg-black/20"></div>
+           <div class="w-4 h-4 rounded-full border-2 border-black"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主体内容滚动区 -->
+    <div class="flex-1 overflow-y-auto no-scrollbar pb-24 relative">
+      
+      <!-- 2. 灵动岛视图切换器 (Identity Toggle) -->
+      <div class="sticky top-0 z-40 flex justify-center pt-3 pb-2 bg-gradient-to-b from-[#F9F7F3] to-transparent pointer-events-none">
+         <div id="view-toggle" class="pointer-events-auto h-8 bg-[#2D2926]/90 backdrop-blur-lg rounded-full px-1 flex items-center shadow-lg border border-white/5 transition-all duration-300">
+            <div id="toggle-me" class="h-6 px-4 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 bg-white text-neutral-900 shadow-sm cursor-pointer">
+              我的用药
+            </div>
+            <div id="toggle-family" class="h-6 px-4 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 text-white/50 cursor-pointer relative">
+              家人照护
+              <span id="alert-dot" class="absolute top-1 right-2 w-1 h-1 bg-feedback-warning rounded-full border border-neutral-900"></span>
+            </div>
+         </div>
+      </div>
+
+      <!-- 3. 核心打卡区 (Hero Section) - 融入全局背景 -->
+      <section class="mt-8 flex flex-col items-center px-6">
+        <div class="relative">
+          <!-- 更柔和的呼吸光晕 -->
+          <div id="hero-glow" class="absolute inset-0 rounded-full bg-brand-primary/20 blur-3xl transition-opacity duration-1000 opacity-40 animate-pulse"></div>
+          
+          <div id="hero-button" class="relative w-44 h-44 flex flex-col items-center justify-center rounded-full bg-brand-primary shadow-[0_12px_40px_-10px_rgba(234,88,12,0.4)] btn-bounce cursor-pointer active-overlay overflow-hidden transition-all duration-500 z-10">
+            <div id="state-pending" class="flex flex-col items-center text-center">
+              <svg class="w-10 h-10 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-lg font-bold text-white tracking-wide">我吃过了</span>
+              <span class="text-[10px] text-white/70 mt-0.5 font-medium">降压药 · 1片</span>
+            </div>
+
+            <div id="state-done" class="hidden flex flex-col items-center text-center">
+              <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"></path>
+              </svg>
+              <span class="text-base font-bold text-white mt-1">今日已达标</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 辅助文案：改为更柔和的文本样式 -->
+        <div class="mt-8 text-center">
+          <p class="text-[10px] font-bold text-brand-primary/60 uppercase tracking-[0.2em]">Next Task</p>
+          <p class="text-xs font-semibold text-[#6B635B] mt-1">12:30 鱼油 · 2粒</p>
+        </div>
+      </section>
+
+      <!-- 4. 极简时间轴任务队列 (Minimal Timeline) -->
+      <section class="mt-12 px-8">
+        <div class="flex items-center justify-between mb-6 px-1">
+          <h3 class="text-sm font-bold text-[#2D2926]">今日任务流</h3>
+          <span class="text-[10px] text-[#8C847E] font-medium">详情 ></span>
+        </div>
+        
+        <!-- 时间轴容器 -->
+        <div class="relative pl-6 border-l border-neutral-200 ml-1.5 space-y-8 pb-4">
+          
+          <!-- 任务 A：家人漏服 (紧急 - 仅通过视觉提示) -->
+          <div class="relative">
+            <!-- 时间点状态 -->
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-feedback-warning flex items-center justify-center">
+              <div class="w-1.5 h-1.5 rounded-full bg-feedback-warning animate-ping"></div>
+            </div>
+            
+            <div class="flex items-center">
+              <img class="w-8 h-8 rounded-full border border-white shadow-sm" src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=ccfbf1" alt="Avatar">
+              <div class="ml-3">
+                <div class="text-xs font-bold text-[#2D2926]">奶奶 <span class="text-feedback-warning ml-1 text-[10px]">漏服</span></div>
+                <div class="text-[10px] text-[#8C847E] mt-0.5 font-medium">08:00 降压药 · 延时 20m</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 任务 B：我的下一个任务 (常规) -->
+          <div class="relative">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-brand-primary flex items-center justify-center">
+               <div class="w-1.5 h-1.5 rounded-full bg-brand-primary"></div>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="w-8 h-8 rounded-full bg-brand-primary-muted flex items-center justify-center text-brand-primary text-[10px] font-bold">ME</div>
+              <div class="ml-3">
+                <div class="text-xs font-bold text-[#2D2926]">午间服药</div>
+                <div class="text-[10px] text-[#8C847E] mt-0.5 font-medium">12:30 鱼油 · 2粒</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 任务 C：家属后续提醒 (弱显示) -->
+          <div class="relative opacity-50">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-neutral-200 flex items-center justify-center">
+               <div class="w-1.5 h-1.5 rounded-full bg-neutral-200"></div>
+            </div>
+            
+            <div class="flex items-center">
+              <img class="w-8 h-8 rounded-full grayscale" src="https://api.dicebear.com/7.x/notionists/svg?seed=Aneka&backgroundColor=ccfbf1" alt="Avatar">
+              <div class="ml-3">
+                <div class="text-xs font-medium text-[#8C847E]">小萱 晚间提醒</div>
+                <div class="text-[10px] text-[#8C847E]/70 mt-0.5">18:00 维生素 C</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 5. 底部导航栏 (Merged Style) -->
+    <div class="absolute bottom-0 w-full h-[50px] bg-[#F9F7F3]/95 backdrop-blur-xl border-t border-black/5 flex justify-around items-center px-2 z-[60] mb-[env(safe-area-inset-bottom)]">
+      <div class="flex flex-col items-center justify-center w-1/3 text-[#8C847E] active-overlay py-1">
+        <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span class="text-[9px] font-bold scale-90">日历</span>
+      </div>
+      
+      <div class="flex flex-col items-center justify-center w-1/3 text-brand-primary active-overlay py-1">
+        <svg class="w-6 h-6 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L4 9v12h16V9l-8-6zm0 2.5l6 4.5v9h-12v-9l6-4.5z"/></svg>
+        <span class="text-[9px] font-bold scale-90">首页</span>
+      </div>
+
+      <div class="flex flex-col items-center justify-center w-1/3 text-[#8C847E] active-overlay py-1">
+        <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        <span class="text-[9px] font-bold scale-90">我的</span>
+      </div>
+    </div>
+
+    <!-- 安全区底色适配 -->
+    <div class="absolute bottom-0 w-full h-[env(safe-area-inset-bottom)] bg-[#F9F7F3]"></div>
+
+    <!-- 安全区提示条 (iOS Home Indicator) -->
+    <div class="absolute bottom-1 w-1/3 h-1.5 bg-neutral-300 rounded-full left-1/2 -translate-x-1/2 opacity-50"></div>
+
+  </div>
+
+  <script>
+    const heroButton = document.getElementById('hero-button');
+    const statePending = document.getElementById('state-pending');
+    const stateDone = document.getElementById('state-done');
+
+    heroButton.addEventListener('click', () => {
+      if (stateDone.classList.contains('hidden')) {
+        heroButton.classList.replace('bg-brand-primary', 'bg-feedback-success');
+        statePending.classList.add('hidden');
+        stateDone.classList.remove('hidden');
+      } else {
+        heroButton.classList.replace('bg-feedback-success', 'bg-brand-primary');
+        stateDone.classList.add('hidden');
+        statePending.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
