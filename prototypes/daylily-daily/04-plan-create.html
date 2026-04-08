@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>萱草日签 - 添加用药提醒</title>
+  <link id="theme-css" rel="stylesheet" href="themes/default.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: 'rgb(var(--brand-primary) / <alpha-value>)',
+              secondary: 'rgb(var(--brand-secondary) / <alpha-value>)',
+              'primary-muted': 'rgb(var(--brand-primary-muted) / <alpha-value>)',
+            },
+            surface: {
+              base: 'rgb(var(--surface-base) / <alpha-value>)',
+              container: 'rgb(var(--surface-container) / <alpha-value>)',
+              elevated: 'rgb(var(--surface-elevated) / <alpha-value>)',
+            },
+            feedback: {
+              success: 'rgb(var(--feedback-success) / <alpha-value>)',
+              warning: 'rgb(var(--feedback-warning) / <alpha-value>)',
+            }
+          },
+          boxShadow: {
+            'brand-sm': '0 2px 4px -1px rgb(var(--shadow-color) / 0.06), 0 1px 2px -1px rgb(var(--shadow-color) / 0.04)',
+            'brand-md': '0 4px 6px -1px rgb(var(--shadow-color) / 0.1), 0 2px 4px -2px rgb(var(--shadow-color) / 0.05)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .active-overlay { position: relative; overflow: hidden; }
+    .active-overlay::after { content: ''; position: absolute; inset: 0; background-color: rgba(0,0,0,0); transition: background-color 0.1s; pointer-events: none; }
+    .active-overlay:active::after { background-color: rgba(0,0,0,0.08); }
+    
+    /* 隐藏原生 time/date 控件自带的丑陋 icon */
+    input[type="time"]::-webkit-calendar-picker-indicator { background: transparent; bottom: 0; color: transparent; cursor: pointer; height: auto; left: 0; position: absolute; right: 0; top: 0; width: auto; }
+  </style>
+</head>
+<body class="bg-neutral-100 flex items-center justify-center min-h-screen font-sans antialiased text-[#4A443F]">
+  <!-- Mobile Container (Modal Form Style) -->
+  <div class="relative w-full max-w-[375px] h-[812px] bg-white shadow-2xl overflow-hidden flex flex-col border-[8px] border-neutral-900 rounded-[50px]">
+    
+    <!-- 1. Header NavBar -->
+    <div class="shrink-0 z-50 bg-white/90 backdrop-blur-md pb-2">
+      <!-- 状态栏占位 -->
+      <div class="h-11 w-full"></div>
+      <!-- 标题栏 -->
+      <div class="h-11 w-full flex items-center justify-between px-4 relative">
+        <div class="w-16 flex items-center active-overlay cursor-pointer" onclick="window.history.back()">
+           <span class="text-[#2D2926] text-[15px] font-medium">取消</span>
+        </div>
+        <h2 class="text-[17px] font-bold text-[#2D2926]">新建用药提醒</h2>
+        <div class="w-16 flex justify-end"></div>
+      </div>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="flex-1 overflow-y-auto no-scrollbar pb-32 px-5">
+
+      <!-- 🌟 Module 0: 服药人身份选择 (Taker Identity) -->
+      <section class="mt-4 mb-8">
+        <div class="flex items-center justify-between mb-3 px-1">
+           <h3 class="text-[13px] font-bold text-[#8C847E]">为谁设置提醒？</h3>
+           <div class="flex items-center space-x-2">
+              <span class="text-[11px] text-neutral-500 bg-neutral-100/80 px-2.5 py-1 rounded-full cursor-pointer active-overlay flex items-center hover:bg-neutral-200 transition-colors" onclick="showAddShadowInput()">
+                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>建影子组
+              </span>
+              <span class="text-[11px] text-green-600 bg-green-50 px-2.5 py-1 rounded-full cursor-pointer active-overlay flex items-center hover:bg-green-100 transition-colors">
+                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>微信邀请
+              </span>
+           </div>
+        </div>
+        <div class="flex items-center space-x-3 overflow-x-auto no-scrollbar pb-2 pt-1 -ml-1 pl-1">
+           <!-- 自身 (Active state) -->
+           <div class="flex flex-col items-center cursor-pointer active-overlay group" onclick="selectTaker(this)">
+              <div class="w-12 h-12 rounded-full border-2 border-brand-primary p-0.5 transition-all">
+                <div class="w-full h-full rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-[14px]">我</div>
+              </div>
+              <span class="text-[10px] font-bold text-brand-primary mt-1.5 transition-colors">自己</span>
+           </div>
+
+           <!-- 家人A (影子账户) -->
+           <div class="flex flex-col items-center cursor-pointer active-overlay group opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all" onclick="selectTaker(this)">
+              <div class="w-12 h-12 rounded-full border-2 border-transparent p-0.5 transition-all relative">
+                <img class="w-full h-full rounded-full" src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=fce7f3" alt="Grandpa">
+                <!-- 影子账户标识 -->
+                <div class="absolute bottom-0 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                   <svg class="w-2.5 h-2.5 text-orange-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+              </div>
+              <span class="text-[10px] font-medium text-[#8C847E] mt-1.5 group-hover:text-[#2D2926] group-hover:font-bold transition-colors">爷爷</span>
+           </div>
+
+           <!-- 家人B (真实照护组成员) -->
+           <div class="flex flex-col items-center cursor-pointer active-overlay group opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all" onclick="selectTaker(this)">
+              <div class="w-12 h-12 rounded-full border-2 border-transparent p-0.5 transition-all relative">
+                <img class="w-full h-full rounded-full" src="https://api.dicebear.com/7.x/notionists/svg?seed=Lily&backgroundColor=dbeafe" alt="Daughter">
+                <!-- 真实微信用户标识 (微信绿底小白圈模拟) -->
+                <div class="absolute bottom-0 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                   <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8.5 13.5c-2.48 0-4.5-1.79-4.5-4s2.02-4 4.5-4 4.5 1.79 4.5 4-2.02 4-4.5 4zm6.5 6c-2.21 0-4-1.34-4-3s1.79-3 4-3 4 1.34 4 3-1.79 3-4 3z"/></svg>
+                </div>
+              </div>
+              <span class="text-[10px] font-medium text-[#8C847E] mt-1.5 group-hover:text-[#2D2926] group-hover:font-bold transition-colors">女儿</span>
+           </div>
+
+        </div>
+
+        <!-- 隐藏的：输入影子账户名字的框区 -->
+        <div id="add-shadow-input" class="hidden mt-3 bg-[#F9F7F3] p-3 rounded-2xl flex items-center shadow-inner">
+           <input type="text" placeholder="称呼，如：老伴儿..." class="bg-transparent flex-1 text-[13px] text-[#2D2926] font-bold focus:outline-none placeholder:text-neutral-400 placeholder:font-normal" id="shadow-name-input">
+           <div class="bg-brand-primary text-white text-[11px] font-bold px-3 py-1.5 rounded-full cursor-pointer ml-3 active-overlay shadow-sm" onclick="addNewShadow()">新建影子组</div>
+        </div>
+      </section>
+
+      <!-- 分隔线 -->
+      <div class="w-full h-px bg-neutral-100 mb-8"></div>
+
+      <!-- 🌟 Module 1: 药名输入 (大字号聚焦) -->
+      <section class="mb-10">
+        <h3 class="text-[13px] font-bold text-[#8C847E] mb-2 relative">
+           药的名字是？
+           <span class="absolute right-0 text-[10px] text-brand-primary/80 font-normal underline decoration-dashed underline-offset-2 cursor-pointer">扫一下药盒装个样子</span>
+        </h3>
+        <div class="relative border-b-2 border-neutral-200 focus-within:border-brand-primary transition-colors pb-1">
+           <input type="text" placeholder="输入自己看得懂的简拼，如：降压药" class="w-full bg-transparent text-[22px] font-bold text-[#2D2926] h-14 placeholder:text-neutral-300 placeholder:font-normal focus:outline-none placeholder:text-[18px]">
+        </div>
+      </section>
+
+      <!-- 🌟 Module 2: 用量及快捷胶囊 (Dosage & Quick Pills) -->
+      <section class="mb-10">
+        <h3 class="text-[13px] font-bold text-[#8C847E] mb-2">每次吃多少？</h3>
+        <div class="relative border-b-2 border-neutral-200 focus-within:border-brand-primary transition-colors pb-1 flex items-center">
+           <input type="text" id="dosage-input" placeholder="可随意填，如：半个瓶盖" class="w-full bg-transparent text-[20px] font-bold text-[#2D2926] h-12 placeholder:text-neutral-300 placeholder:font-normal focus:outline-none placeholder:text-[16px]">
+        </div>
+        <!-- 快捷填充胶囊 -->
+        <div class="flex flex-wrap gap-2 mt-4">
+           <div class="bg-[#F9F7F3] border border-black/5 text-[#8C847E] text-[12px] font-bold px-4 py-2 rounded-full cursor-pointer active-overlay hover:bg-neutral-100 transition-colors" onclick="fillDosage('1 片')">💊 1 片</div>
+           <div class="bg-[#F9F7F3] border border-black/5 text-[#8C847E] text-[12px] font-bold px-4 py-2 rounded-full cursor-pointer active-overlay hover:bg-neutral-100 transition-colors" onclick="fillDosage('2 粒')">💊 2 粒</div>
+           <div class="bg-[#F9F7F3] border border-black/5 text-[#8C847E] text-[12px] font-bold px-4 py-2 rounded-full cursor-pointer active-overlay hover:bg-neutral-100 transition-colors" onclick="fillDosage('半片')">🔪 半片</div>
+           <div class="bg-[#F9F7F3] border border-black/5 text-[#8C847E] text-[12px] font-bold px-4 py-2 rounded-full cursor-pointer active-overlay hover:bg-neutral-100 transition-colors" onclick="fillDosage('1 包')">📦 1 包</div>
+        </div>
+      </section>
+
+      <!-- 🌟 Module 3: 提醒时间与周期 -->
+      <section class="mb-10">
+        <h3 class="text-[13px] font-bold text-[#8C847E] mb-4">要在哪个时间提醒？</h3>
+        <div class="flex items-center space-x-6">
+           <!-- 系统原生巨大时间控件 (最轻量的解法) -->
+           <div class="relative w-36 h-20 bg-[#F9F7F3] rounded-[24px] flex items-center justify-center border-2 border-transparent focus-within:border-brand-primary active-overlay">
+              <input type="time" value="08:00" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="document.getElementById('time-display').innerText = this.value">
+              <span id="time-display" class="text-[36px] font-bold text-[#2D2926] tracking-tight">08:00</span>
+           </div>
+
+           <!-- 频次选择器 -->
+           <div class="flex-1">
+              <div class="text-[11px] font-medium text-[#8C847E] mb-2">重复频次</div>
+              <select class="w-full bg-[#F9F7F3] text-[#2D2926] text-[15px] font-bold h-10 px-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary appearance-none relative">
+                 <option value="daily" selected>每天</option>
+                 <option value="every-other">隔天一次</option>
+                 <option value="specific-day">特定星期...</option>
+                 <option value="custom-cycle">做几休几...</option>
+              </select>
+           </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 4. Bottom Sticky Action Area -->
+    <div class="absolute bottom-0 w-full bg-white/90 backdrop-blur-xl border-t border-neutral-100 pt-4 pb-[env(safe-area-inset-bottom)] px-5 z-50">
+       <div class="flex items-center justify-center bg-brand-primary text-white text-[16px] font-bold h-[52px] rounded-full shadow-[0_8px_20px_-8px_rgba(234,88,12,0.6)] cursor-pointer active-overlay transition-transform duration-200 transform active:scale-[0.98] btn-bounce mb-2">
+          保存，开启提醒
+       </div>
+    </div>
+
+    <!-- 安全区底色适配 -->
+    <div class="absolute bottom-0 w-full h-[env(safe-area-inset-bottom)] bg-white z-[60]"></div>
+    <!-- 安全区提示条 (iOS Home Indicator) -->
+    <div class="absolute bottom-1 w-1/3 h-1.5 bg-neutral-300 rounded-full left-1/2 -translate-x-1/2 opacity-50 z-[70]"></div>
+
+  </div>
+
+  <script>
+    // 自动填充剂量逻辑
+    function fillDosage(val) {
+       document.getElementById('dosage-input').value = val;
+    }
+
+    // 服药人身份单选切换（Visual Only）
+    function selectTaker(element) {
+       // 重置所有 Taker 的样式
+       const allTakers = element.parentElement.querySelectorAll('div[onclick^="selectTaker"]');
+       allTakers.forEach(el => {
+          // 变成灰显失焦状态
+          el.classList.add('opacity-60', 'grayscale');
+          const circle = el.firstElementChild;
+          if(circle.classList.contains('border-brand-primary')) {
+             circle.classList.remove('border-brand-primary');
+             circle.classList.add('border-transparent');
+          }
+          const text = el.lastElementChild;
+          if(text.classList.contains('text-brand-primary')) {
+             text.classList.remove('text-brand-primary');
+             text.classList.add('text-[#8C847E]');
+          }
+       });
+
+       // 激活当前点击的项
+       element.classList.remove('opacity-60', 'grayscale');
+       const circle = element.firstElementChild;
+       circle.classList.remove('border-transparent');
+       circle.classList.add('border-brand-primary');
+       const text = element.lastElementChild;
+       text.classList.remove('text-[#8C847E]');
+       text.classList.add('text-brand-primary');
+
+       // 隐藏添加框
+       document.getElementById('add-shadow-input').classList.add('hidden');
+    }
+
+    // 展开/收起新建影子账户的输入框
+    function showAddShadowInput() {
+       const wrapper = document.getElementById('add-shadow-input');
+       wrapper.classList.toggle('hidden');
+       if(!wrapper.classList.contains('hidden')){
+          document.getElementById('shadow-name-input').focus();
+       }
+    }
+
+    // 新建影子账户保存事件模拟
+    function addNewShadow() {
+       const name = document.getElementById('shadow-name-input').value;
+       if(name.trim() === '') return;
+       alert('前端交互演练：新建影子账户 [' + name + '] 成功！将并入上面的服药人列表并默认选中。');
+       document.getElementById('add-shadow-input').classList.add('hidden');
+       document.getElementById('shadow-name-input').value = '';
+    }
+  </script>
+</body>
+</html>
