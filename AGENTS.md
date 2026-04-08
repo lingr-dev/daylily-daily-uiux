@@ -9,6 +9,7 @@
 ```text
 prototypes/
 └── <project_code>/         # 必须使用内部项目代号（如: xuan-cao-v1）
+    ├── prd/                # 产品需求文档、介绍及正式文件
     ├── styles/             # 该项目专属的 CSS 资源
     ├── assets/             # 该项目专属的图片、图标等媒体资源
     ├── index.html          # 项目入口/导航页面
