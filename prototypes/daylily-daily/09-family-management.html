@@ -160,20 +160,34 @@
         </p>
       </section>
 
-      <!-- 4. 隐私熔断开关 -->
+      <!-- 4. 隐私熔断开关与免打扰 -->
       <section class="mb-12 px-4 space-y-4">
-         <h4 class="text-[13px] font-bold text-[#8C847E] px-1">全家数据隐私</h4>
-         <div class="bg-white rounded-[20px] p-5 shadow-brand-sm flex items-start justify-between border border-black/5 active-overlay cursor-pointer" onclick="document.getElementById('privacy-toggle').click()">
-            <div class="flex-1 pr-6 pointer-events-none">
-               <h3 class="text-[15px] font-bold text-[#2D2926]">向群成员隐身 (不共享我的数据)</h3>
-               <p class="text-[11px] text-[#8C847E] mt-1.5 leading-snug">开启后，您依然保留家庭群主身份，但不再向他们同步您的打卡流水与漏服警告。</p>
-            </div>
-            
-            <!-- iOS Toggle -->
-            <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in mt-1 pointer-events-auto">
-               <input type="checkbox" id="privacy-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-neutral-200 appearance-none cursor-pointer transition-transform duration-200 z-10 top-1/2 -translate-y-1/2 left-0"/>
-               <label for="privacy-toggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-neutral-200 cursor-pointer transition-colors duration-200"></label>
-            </div>
+         <h4 class="text-[13px] font-bold text-[#8C847E] px-1">通知与隐私</h4>
+         
+         <div class="bg-white rounded-[20px] shadow-brand-sm border border-black/5 overflow-hidden divide-y divide-neutral-50">
+           <!-- 免打扰开关 -->
+           <div class="p-5 flex items-start justify-between active-overlay cursor-pointer" onclick="document.getElementById('mute-toggle').click()">
+              <div class="flex-1 pr-6 pointer-events-none">
+                 <h3 class="text-[15px] font-bold text-[#2D2926]">消息免打扰</h3>
+                 <p class="text-[11px] text-[#8C847E] mt-1.5 leading-snug">开启后，您将不再收到本组长辈的漏服警告与打卡通知，但仍可随时进入查看。</p>
+              </div>
+              <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in mt-1 pointer-events-auto">
+                 <input type="checkbox" id="mute-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-neutral-200 appearance-none cursor-pointer transition-transform duration-200 z-10 top-1/2 -translate-y-1/2 left-0"/>
+                 <label for="mute-toggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-neutral-200 cursor-pointer transition-colors duration-200"></label>
+              </div>
+           </div>
+
+           <!-- 隐私开关 -->
+           <div class="p-5 flex items-start justify-between active-overlay cursor-pointer" onclick="document.getElementById('privacy-toggle').click()">
+              <div class="flex-1 pr-6 pointer-events-none">
+                 <h3 class="text-[15px] font-bold text-[#2D2926]">向群成员隐身 (不共享我的数据)</h3>
+                 <p class="text-[11px] text-[#8C847E] mt-1.5 leading-snug">开启后，您依然保留群内身份，但不再向他们同步您的打卡流水。</p>
+              </div>
+              <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in mt-1 pointer-events-auto">
+                 <input type="checkbox" id="privacy-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-neutral-200 appearance-none cursor-pointer transition-transform duration-200 z-10 top-1/2 -translate-y-1/2 left-0"/>
+                 <label for="privacy-toggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-neutral-200 cursor-pointer transition-colors duration-200"></label>
+              </div>
+           </div>
          </div>
       </section>
 
@@ -246,7 +260,8 @@
           
           <h3 class="text-lg font-bold text-[#2D2926] mb-2 text-center">确定退出照护组吗？</h3>
           <p class="text-[12px] text-[#8C847E] text-center mb-6 leading-relaxed">
-            离开后，您将无法再查看群内成员的用药提醒和打卡数据。<br>您需要被重新邀请才能再次加入。
+            退出后将不再接收长辈的用药动态。<br>
+            <strong class="text-brand-primary">如果仅是觉得消息多，建议优先开启【消息免打扰】。</strong><br>仍要退出吗？
           </p>
           
           <div class="flex w-full space-x-3">

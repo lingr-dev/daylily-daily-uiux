@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>萱草日签 - 我加入的群组空间</title>
+  <title>萱草日签 - 照护空间管理</title>
   <link id="theme-css" rel="stylesheet" href="themes/default.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -14,22 +14,12 @@
           colors: {
             brand: {
               primary: '#FF9500', 
-              secondary: 'rgb(var(--brand-secondary) / <alpha-value>)',
-              'primary-muted': 'rgb(var(--brand-primary-muted) / <alpha-value>)',
+              premium: '#D4AF37',
             },
-            surface: {
-              base: 'rgb(var(--surface-base) / <alpha-value>)',
-              container: 'rgb(var(--surface-container) / <alpha-value>)',
-              elevated: 'rgb(var(--surface-elevated) / <alpha-value>)',
-            },
-            feedback: {
-              success: '#34C759',
-              warning: '#FF3B30',
-            }
           },
           boxShadow: {
-            'brand-sm': '0 2px 4px -1px rgb(var(--shadow-color) / 0.06), 0 1px 2px -1px rgb(var(--shadow-color) / 0.04)',
-            'brand-md': '0 4px 6px -1px rgb(var(--shadow-color) / 0.1), 0 2px 4px -2px rgb(var(--shadow-color) / 0.05)',
+            'brand-sm': '0 2px 4px -1px rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.04)',
+            'premium': '0 10px 30px -10px rgba(212, 175, 55, 0.4)',
           }
         }
       }
@@ -41,238 +31,222 @@
     .active-overlay { position: relative; overflow: hidden; }
     .active-overlay::after { content: ''; position: absolute; inset: 0; background-color: rgba(0,0,0,0); transition: background-color 0.1s; pointer-events: none; }
     .active-overlay:active::after { background-color: rgba(0,0,0,0.08); }
+    .btn-bounce { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .btn-bounce:active { transform: scale(0.96); }
     
-    .gold-gradient {
-       background: linear-gradient(135deg, #FDF7E2 0%, #FAEDBE 100%);
+    .bottom-sheet {
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .gold-text {
-       background: linear-gradient(90deg, #8B6508 0%, #D4AF37 100%);
-       -webkit-background-clip: text;
-       -webkit-text-fill-color: transparent;
+    .bottom-sheet.open {
+      transform: translateY(0);
     }
-    
-    .pro-shimmer {
-      background: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
-      background-size: 200% 100%;
-      animation: shimmer 3s infinite linear;
+    .overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
     }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
+    .overlay.open {
+      opacity: 1;
+      pointer-events: auto;
     }
-    
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body class="bg-neutral-100 flex items-center justify-center min-h-screen font-sans antialiased text-[#4A443F]">
-  <!-- Mobile Container -->
   <div class="relative w-full max-w-[375px] h-[812px] bg-[#F9F7F3] shadow-2xl overflow-hidden flex flex-col border-[8px] border-neutral-900 rounded-[50px]">
     
-    <!-- 💥 Dev Toggle For Pro Mode -->
-    <div class="absolute top-14 right-4 z-[100] bg-black/80 text-white text-[10px] px-3 py-2 rounded-full cursor-pointer hover:bg-black transition-colors shadow-lg border border-neutral-700 font-bold tracking-wider" onclick="toggleProMode()">
+    <!-- Dev Toggle -->
+    <div class="absolute top-14 right-4 z-[100] bg-black/80 text-white text-[10px] px-3 py-2 rounded-full cursor-pointer hover:bg-black transition-colors shadow-lg border border-neutral-700 font-bold" onclick="toggleProMode()">
        切换 PRO 态
     </div>
 
-    <!-- Header NavBar -->
+    <!-- NavBar -->
     <div class="shrink-0 z-50 bg-[#F9F7F3]/90 backdrop-blur-md">
       <div class="h-11 w-full"></div>
-      <div class="h-11 w-full flex items-center justify-between px-4 relative">
-        <div class="w-[87px] flex items-center active-overlay cursor-pointer" onclick="window.history.back()">
+      <div class="h-11 w-full flex items-center justify-between px-4">
+        <div class="w-[87px] flex items-center cursor-pointer" onclick="window.history.back()">
           <svg class="w-6 h-6 text-[#2D2926]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </div>
-        <!-- 胶囊菜单占位 -->
-        <h2 class="text-[17px] font-bold text-[#2D2926]">我的所有家庭组</h2>
+        <h2 class="text-[17px] font-bold text-[#2D2926]">家庭照护空间</h2>
         <div class="w-[87px]"></div>
       </div>
     </div>
 
-    <!-- Scrollable Body -->
+    <!-- Body -->
     <div class="flex-1 overflow-y-auto no-scrollbar pb-32">
       
-      <!-- Intro Section -->
+      <!-- Intro -->
       <section class="mt-2 mb-6 px-5">
-        <h1 class="text-[26px] font-bold text-[#2D2926] tracking-tight mb-1">照护空间</h1>
         <p class="text-[13px] text-[#8C847E] leading-relaxed">
-          在这里切换不同家庭圈层的用药提醒。
+          在这里管理您创建的家庭圈，或查看由亲友邀请您加入的圈子。
         </p>
       </section>
 
-      <!-- 1. 基本盘：铁打的基础群组 -->
+      <!-- 模块 A: 我主理的照护空间 -->
       <section class="mb-8 px-4">
-         <h4 class="text-[12px] font-bold text-[#8C847E] px-1 mb-2 tracking-wide">默认归属组</h4>
-         
-         <!-- 赋予固定的品牌色边框以彰显它是主阵地，移除移动端无意义的 hover 态 -->
-         <div class="bg-white rounded-[24px] p-5 shadow-brand-sm border-2 border-brand-primary active-overlay relative cursor-pointer" onclick="window.location.href='09-family-management.html'">
-            
-            <!-- 不能删的静默徽章 -->
-            <div class="absolute top-4 right-4 flex items-center text-[10px] font-bold text-neutral-400 bg-neutral-100 px-2 py-1 rounded">
-               <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> 基础默认
-            </div>
-
-            <div class="flex items-start">
-               <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center text-brand-primary">
-                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-               </div>
-               <div class="ml-4 mt-1">
-                 <h3 class="text-[18px] font-bold text-[#2D2926]">我的家庭</h3>
-                 <div class="flex items-center space-x-1 mt-1 text-neutral-400">
-                    <span class="text-[11px] font-bold text-[#8C847E]">4 位成员</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-                 </div>
-               </div>
-            </div>
-
-            <!-- Avatars strip -->
-            <div class="mt-4 pt-4 border-t border-neutral-50 flex space-x-2">
-               <div class="w-8 h-8 rounded-full border-2 border-brand-primary p-px"><div class="w-full h-full bg-brand-primary rounded-full flex items-center justify-center text-white text-[9px] font-bold">我</div></div>
-               <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100" src="https://api.dicebear.com/7.x/notionists/svg?seed=Lily&backgroundColor=dbeafe" alt="">
-               <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 grayscale opacity-80" src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=fce7f3" alt="">
-               <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 grayscale opacity-80" src="https://api.dicebear.com/7.x/notionists/svg?seed=Nana&backgroundColor=fef08a" alt="">
-            </div>
+         <div class="flex items-center justify-between mb-3 px-1">
+            <h4 class="text-[14px] font-bold text-[#2D2926] tracking-wide flex items-center">
+               我主理的 <span class="ml-2 text-[10px] font-normal text-neutral-400 bg-neutral-200/50 px-1.5 py-0.5 rounded">我是创建者</span>
+            </h4>
+            <span id="pro-badge" class="hidden bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-[9px] px-1.5 rounded font-black italic">PRO</span>
          </div>
+         
+         <div class="space-y-3" id="managed-spaces">
+             <!-- 默认主阵地 -->
+             <div class="bg-white rounded-[24px] p-5 shadow-brand-sm border-2 border-brand-primary active-overlay relative cursor-pointer" onclick="window.location.href='09-family-management.html'">
+                <div class="flex items-start">
+                   <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center text-brand-primary">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                   </div>
+                   <div class="ml-4 mt-1">
+                     <h3 class="text-[17px] font-bold text-[#2D2926]">我的家庭</h3>
+                     <div class="flex items-center space-x-1 mt-1 text-neutral-400">
+                        <span class="text-[11px] font-bold text-[#8C847E]">4 位成员</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                     </div>
+                   </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-neutral-50 flex space-x-2">
+                   <div class="w-8 h-8 rounded-full border-2 border-brand-primary p-px"><div class="w-full h-full bg-brand-primary rounded-full flex items-center justify-center text-white text-[9px] font-bold">我</div></div>
+                   <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100" src="https://api.dicebear.com/7.x/notionists/svg?seed=Lily&backgroundColor=dbeafe" alt="">
+                   <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 grayscale opacity-80" src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=fce7f3" alt="">
+                </div>
+             </div>
+
+             <!-- Pro 用户的第二个圈子 (默认隐藏) -->
+             <div id="pro-second-space" class="hidden bg-white rounded-[24px] p-5 shadow-brand-sm border border-neutral-200 active-overlay relative cursor-pointer animate-[fadeIn_0.3s_ease-out]" onclick="window.location.href='09-family-management.html'">
+                 <div class="flex items-start">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
+                      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </div>
+                    <div class="ml-4 mt-1">
+                      <h3 class="text-[17px] font-bold text-[#2D2926]">娘家的长辈</h3>
+                      <div class="flex items-center space-x-1 mt-1 text-neutral-400">
+                         <span class="text-[11px] font-bold text-[#8C847E]">3 位成员</span>
+                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                      </div>
+                    </div>
+                 </div>
+                 <div class="mt-4 pt-4 border-t border-neutral-50 flex space-x-2">
+                    <div class="w-8 h-8 rounded-full border-2 border-brand-primary p-px"><div class="w-full h-full bg-brand-primary rounded-full flex items-center justify-center text-white text-[9px] font-bold">我</div></div>
+                    <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100" src="https://api.dicebear.com/7.x/notionists/svg?seed=A" alt="">
+                 </div>
+             </div>
+         </div>
+
+         <!-- 新建按钮 -->
+         <button onclick="handleCreateSpace()" class="w-full mt-3 bg-white border border-dashed border-neutral-300 text-[#2D2926] font-bold text-[14px] py-3.5 rounded-2xl active:bg-neutral-50 btn-bounce flex items-center justify-center shadow-sm">
+            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg> 新建独立照护组
+         </button>
       </section>
 
-      <!-- 2. 下半屏幕：商业化门槛漏斗区 -->
-      <section class="px-4 relative mb-12">
-         <h4 class="text-[12px] font-bold text-[#8C847E] px-1 mb-2 tracking-wide flex items-center">
-            多维独立空间 <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-[9px] px-1.5 rounded ml-2 font-black italic">PRO</span>
+      <!-- 模块 B: 我协助的照护空间 (完全免费展示) -->
+      <section class="px-4 mb-12">
+         <h4 class="text-[14px] font-bold text-[#2D2926] px-1 mb-3 tracking-wide flex items-center">
+            我协助的 <span class="ml-2 text-[10px] font-normal text-neutral-400 bg-neutral-200/50 px-1.5 py-0.5 rounded">受亲友邀请</span>
          </h4>
          
-         <!-- 幽灵卡片背景 (表示被锁住的高级功能) -->
-         <div id="ghost-cards" class="space-y-3 opacity-60 filter blur-[2px] pointer-events-none pb-12 transition-all duration-300">
-            <!-- Ghost 1 -->
-            <div class="bg-white rounded-[24px] p-5 shadow-sm border border-neutral-100">
-               <div class="flex items-center">
-                  <div class="w-10 h-10 rounded-2xl bg-neutral-100"></div>
-                  <div class="ml-4 space-y-1.5"><div class="block w-20 h-4 bg-neutral-200 rounded"></div><div class="block w-32 h-3 bg-neutral-100 rounded"></div></div>
-               </div>
-            </div>
-            <!-- Ghost 2 -->
-            <div class="bg-white rounded-[24px] p-5 shadow-sm border border-neutral-100">
-               <div class="flex items-center">
-                  <div class="w-10 h-10 rounded-2xl bg-neutral-100"></div>
-                  <div class="ml-4 space-y-1.5"><div class="block w-16 h-4 bg-neutral-200 rounded"></div><div class="block w-24 h-3 bg-neutral-100 rounded"></div></div>
-               </div>
-            </div>
-         </div>
+         <div class="space-y-3">
+             <!-- 协助组 1 -->
+             <div class="bg-white rounded-[24px] p-5 shadow-brand-sm border border-neutral-200 active-overlay relative cursor-pointer btn-bounce" onclick="window.location.href='09-family-management.html'">
+                <div class="flex items-start">
+                   <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                   </div>
+                   <div class="ml-4 mt-1">
+                     <h3 class="text-[17px] font-bold text-[#2D2926]">婆家护理群</h3>
+                     <div class="flex items-center text-neutral-400 mt-1">
+                        <span class="text-[10px] font-bold text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded">创建人: 老公</span>
+                        <span class="text-[11px] font-bold text-[#8C847E] ml-2">5 位成员</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                     </div>
+                   </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-neutral-50 flex space-x-2 overflow-hidden">
+                   <!-- 协助组里，自己只是参与者 -->
+                   <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 shrink-0" src="https://api.dicebear.com/7.x/notionists/svg?seed=Husband" alt="">
+                   <div class="w-8 h-8 rounded-full border-2 border-white p-px shrink-0"><div class="w-full h-full bg-neutral-200 rounded-full flex items-center justify-center text-neutral-600 text-[9px] font-bold">我</div></div>
+                   <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 shrink-0 grayscale opacity-80" src="https://api.dicebear.com/7.x/notionists/svg?seed=Y" alt="">
+                   <div class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 bg-neutral-100 flex items-center justify-center text-[10px] font-bold text-neutral-400 shrink-0">+2</div>
+                </div>
+             </div>
 
-         <!-- 商业升级蒙版层 (The Upsell Paywall Overlay) -->
-         <div id="upsell-overlay" class="absolute inset-x-4 top-10 bottom-0 z-10 flex flex-col items-center pt-8 bg-gradient-to-t from-[#F9F7F3] via-[#F9F7F3]/90 to-transparent transition-opacity duration-300">
-            
-            <div class="w-16 h-16 bg-white shadow-xl rounded-full mb-4 flex items-center justify-center border-2 border-yellow-100">
-               <svg class="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4L22 9.4l-6 4.4 2.3 7.1-6-4.4-6 4.4 2.3-7.1-6-4.4 7.6 0z" /></svg>
-            </div>
-            
-            <h3 class="text-lg font-bold text-[#2D2926] text-center mb-1">独立圈层，隐私不再混杂</h3>
-            <p class="text-[12px] text-[#8C847E] text-center px-4 mb-6 leading-relaxed">
-               娘家的用药方案不想通知婆家长辈？<br>升级 PRO，无上限独立管理多个照护空间。
-            </p>
-
-            <!-- 流光升级按钮 -->
-            <button class="relative overflow-hidden w-[85%] gold-gradient rounded-full py-4 shadow-xl active:scale-[0.98] transition-transform flex items-center justify-center font-bold border border-yellow-200" onclick="alert('前端交互演练：弹起 Apple Pay 或微信支付半屏窗口')">
-               <div class="absolute inset-0 pro-shimmer pointer-events-none"></div>
-               <span class="gold-text text-[16px] relative z-10 tracking-wide">👑 解锁创建更多家庭组</span>
-            </button>
-            <span class="text-[10px] text-neutral-400 mt-3 relative z-10 underline decoration-1 underline-offset-4 cursor-pointer">或了解 PRO 更多权益</span>
-         </div>
-         
-         <!-- 🌟 真实的 PRO 态卡片 (默认隐藏) -->
-         <div id="real-pro-cards" class="hidden space-y-4 pb-12 mt-4 animate-[fadeIn_0.4s_ease-out]">
-            <!-- Pro 卡片 1 -->
-            <div class="bg-white rounded-[24px] p-5 shadow-brand-sm border border-neutral-200 active-overlay relative cursor-pointer" onclick="window.location.href='09-family-management.html'">
-               <div class="flex items-start">
-                  <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                  </div>
-                  <div class="ml-4 mt-1">
-                    <h3 class="text-[18px] font-bold text-[#2D2926] flex items-center">
-                      娘家的长辈
-                      <span class="ml-2 bg-yellow-50 text-yellow-600 text-[9px] px-1.5 py-0.5 rounded flex items-center font-bold">🌟 你主理</span>
-                    </h3>
-                    <div class="flex items-center space-x-1 mt-1 text-neutral-400">
-                       <span class="text-[11px] font-bold text-[#8C847E]">3 位成员</span>
-                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-                    </div>
-                  </div>
-               </div>
-               <div class="mt-4 pt-4 border-t border-neutral-50 flex space-x-2">
-                  <div class="w-8 h-8 rounded-full border-2 border-brand-primary p-px"><div class="w-full h-full bg-brand-primary rounded-full flex items-center justify-center text-white text-[9px] font-bold">我</div></div>
-                  <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100" src="https://api.dicebear.com/7.x/notionists/svg?seed=A" alt="">
-                  <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 grayscale opacity-80" src="https://api.dicebear.com/7.x/notionists/svg?seed=B" alt="">
-               </div>
-            </div>
-            
-            <!-- Pro 卡片 2 -->
-            <div class="bg-white rounded-[24px] p-5 shadow-brand-sm border border-neutral-200 active-overlay relative cursor-pointer" onclick="window.location.href='09-family-management.html'">
-               <div class="flex items-start">
-                  <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                  </div>
-                  <div class="ml-4 mt-1">
-                    <h3 class="text-[18px] font-bold text-[#2D2926]">婆家护理群</h3>
-                    <div class="flex items-center text-neutral-400 mt-1">
-                       <span class="text-[10px] font-bold text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded">创建: 老公</span>
-                       <span class="text-[11px] font-bold text-[#8C847E] ml-2">5 位成员</span>
-                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-                    </div>
-                  </div>
-               </div>
-               <div class="mt-4 pt-4 border-t border-neutral-50 flex space-x-2 overflow-hidden">
-                  <div class="w-8 h-8 rounded-full border-2 border-brand-primary p-px shrink-0"><div class="w-full h-full bg-brand-primary rounded-full flex items-center justify-center text-white text-[9px] font-bold">我</div></div>
-                  <!-- dummy avatars -->
-                  <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 shrink-0" src="https://api.dicebear.com/7.x/notionists/svg?seed=X" alt="">
-                  <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 shrink-0 grayscale opacity-80" src="https://api.dicebear.com/7.x/notionists/svg?seed=Y" alt="">
-                  <img class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 shrink-0" src="https://api.dicebear.com/7.x/notionists/svg?seed=Z" alt="">
-                  <div class="w-8 h-8 rounded-full border-2 border-white ring-1 ring-neutral-100 bg-neutral-100 flex items-center justify-center text-[10px] font-bold text-neutral-400 shrink-0">+1</div>
-               </div>
-            </div>
-
-            <!-- 建立新照护组 -->
-            <button class="w-full bg-transparent border-2 border-dashed border-neutral-300 text-[#8C847E] font-bold text-[14px] py-4 rounded-[24px] active:bg-neutral-100 active:scale-[0.98] transition-all flex items-center justify-center" onclick="alert('前端交互：由于您是 PRO 会员，这里将跳转至创建新家庭组的名称填写页')">
-               <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg> 建立独立照护组
-            </button>
+             <!-- 协助组 空态 (假设还有一个加入按钮) -->
+             <div class="w-full mt-3 bg-transparent border-2 border-dashed border-neutral-200 text-[#8C847E] font-medium text-[13px] py-4 rounded-2xl active:bg-neutral-50 transition-all flex items-center justify-center cursor-pointer">
+                通过微信群邀请卡片，可加入更多圈子
+             </div>
          </div>
       </section>
 
     </div>
 
-    <!-- 底部模糊占位 -->
-    <div class="absolute bottom-0 w-full h-[env(safe-area-inset-bottom)] bg-[#F9F7F3] z-[60]"></div>
+    <!-- 底部占位 -->
+    <div class="absolute bottom-0 w-full h-[env(safe-area-inset-bottom)] bg-[#F9F7F3] z-40"></div>
     <div class="absolute bottom-1 w-1/3 h-1.5 bg-neutral-300 rounded-full left-1/2 -translate-x-1/2 opacity-50 z-[70]"></div>
 
+    <!-- 暗色遮罩 -->
+    <div id="overlay" class="overlay absolute inset-0 bg-black/40 z-50" onclick="closeUpsell()"></div>
+
+    <!-- PRO 升级底部弹窗 -->
+    <div id="upsell-sheet" class="bottom-sheet absolute bottom-0 w-full bg-white rounded-t-[24px] z-[60] pb-[env(safe-area-inset-bottom)]">
+      <div class="p-6 text-center pt-8">
+        <div class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center cursor-pointer bg-neutral-100 rounded-full" onclick="closeUpsell()">
+          <svg class="w-5 h-5 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </div>
+        
+        <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-yellow-50 shadow-sm rounded-full mx-auto mb-4 flex items-center justify-center border border-yellow-200">
+           <svg class="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4L22 9.4l-6 4.4 2.3 7.1-6-4.4-6 4.4 2.3-7.1-6-4.4 7.6 0z" /></svg>
+        </div>
+        
+        <h3 class="text-[20px] font-bold text-[#2D2926] mb-2">解锁无限独立空间</h3>
+        <p class="text-[13px] text-content-secondary leading-relaxed px-2 mb-8">
+          基础账户仅支持主理 1 个照护空间。<br>升级亲情版，可为不同长辈创建独立的记录与提醒圈子，隐私互不干扰。
+        </p>
+
+        <button onclick="window.location.href='11-pro-landing.html'" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B8860B] text-white font-bold text-[16px] shadow-premium btn-bounce">
+          了解亲情版
+        </button>
+      </div>
+    </div>
+
   </div>
+
   <script>
     let isPro = false;
+    
     function toggleProMode() {
        isPro = !isPro;
-       const ghostCards = document.getElementById('ghost-cards');
-       const upsellOverlay = document.getElementById('upsell-overlay');
-       const realProCards = document.getElementById('real-pro-cards');
-       
+       const proSecondSpace = document.getElementById('pro-second-space');
+       const proBadge = document.getElementById('pro-badge');
        if(isPro) {
-          // Fade out the Free upsell
-          ghostCards.classList.add('opacity-0');
-          upsellOverlay.classList.add('opacity-0', 'pointer-events-none');
-          setTimeout(() => {
-             ghostCards.classList.add('hidden');
-             upsellOverlay.classList.add('hidden');
-             // Show Pro cards
-             realProCards.classList.remove('hidden');
-          }, 300);
+          proSecondSpace.classList.remove('hidden');
+          proBadge.classList.remove('hidden');
        } else {
-          // Hide Pro cards
-          realProCards.classList.add('hidden');
-          // Show Free upsell
-          ghostCards.classList.remove('hidden');
-          upsellOverlay.classList.remove('hidden');
-          // Allow DOM to update before transition
-          void ghostCards.offsetWidth;
-          ghostCards.classList.remove('opacity-0');
-          upsellOverlay.classList.remove('opacity-0', 'pointer-events-none');
+          proSecondSpace.classList.add('hidden');
+          proBadge.classList.add('hidden');
        }
+    }
+
+    const overlay = document.getElementById('overlay');
+    const upsellSheet = document.getElementById('upsell-sheet');
+
+    function handleCreateSpace() {
+       if (isPro) {
+          alert('前端演示：您已经是 PRO 会员，将跳转至填写家庭名称的表单页。');
+       } else {
+          // 拉起升级说明弹窗
+          overlay.classList.add('open');
+          upsellSheet.classList.add('open');
+       }
+    }
+
+    function closeUpsell() {
+       overlay.classList.remove('open');
+       upsellSheet.classList.remove('open');
     }
   </script>
 </body>
