@@ -1,0 +1,69 @@
+# 角色与权限矩阵 (Role–Permission Matrix) — daylily-daily
+
+## 元数据
+
+| 字段 | 内容 |
+|------|------|
+| 产品线 / 迭代 | 萱草日签 / 与首页规格同步 |
+| req-specs 基线 | `23aa4de` |
+| 权限规则出处 | `req-specs/02-models/domains/care-group-identity/`（组成员与角色）<br>`req-specs/02-models/domains/medication-plan/v1-user-journey-touchpoints.md`（私密计划）<br>`req-specs/02-models/domains/adherence-punch/v1-state-data-rules.md`（`R-AP-3` 私密 punch 元数据）<br>`prototypes/daylily-daily/prd/00-product-consensus-v1.0.md`（照护组模型） |
+
+## 1. 角色定义
+
+| 角色 ID | 显示名 | 说明 | 与 req-specs 对齐 |
+|---------|--------|------|-------------------|
+| `subject_self` | 本人（执行者=当前用户） | 自己服药、自己打卡 | medication-plan MJ2/MJ3 |
+| `caregiver` | 照护者 | 为家人建计划、看监督动态 | MJ1、MJ4 |
+| `caregiver_only` | 纯照护者（边界态） | 本人 0 计划、家人有计划 | DDR 三重边界 H-IDLE-CAREGIVER |
+| `member_view` | 组内非管理员成员 | 可见性由组与计划私密属性裁剪 | care-group-identity |
+
+说明：同一微信用户在不同照护组可有不同角色（产品共识 5.4）；本表描述 **默认进入首页** 时的典型表现，**细粒度以接口授权为准**。
+
+## 2. 页面 / 模块 × 角色 — 首页 `01-home.html`
+
+> **可见**：N = 正常展示；占位 = 区块存在但空提示；隐藏 = 不占位。  
+> **动作**：✓ / ✗ / △（条件见备注）。
+
+### 2.1 页面级
+
+| 页面 / 原型 | subject_self | caregiver | caregiver_only | 备注 |
+|-------------|--------------|-----------|----------------|------|
+| `01-home.html` 整体 | 可见：N | 可见：N | 可见：N | 登录后均可进；三种主态见屏幕契约 2.3 |
+
+### 2.2 模块或区块级（同一页）
+
+| 页面 | 模块 / 区块 | subject_self | caregiver | caregiver_only | 备注 |
+|------|-------------|--------------|-----------|----------------|------|
+| `01-home.html` | 新手引导 H-ONBOARD | △ 仅 Total Plans=0 | 同左 | 同左 | 双 CTA |
+| `01-home.html` | Hero 打卡 | ✓；**Idle 不可点** | ✓；**Idle 不可点** | ✗ Hero=Idle | 建自己计划：**「我的」— 日常用药计划** |
+| `01-home.html` | 进度环 | ✓ 有排程时比例；无排程 / Idle **idle 视觉** | 同左 | ✓ **idle 视觉**（纯照护者） | 口径见契约 2.1 |
+| `01-home.html` | 灵动岛切换 | ✓ | ✓ | ✓ | `family` 模式无 Hero |
+| `01-home.html` | 今日健康动态 | ✓ | ✓ | ✓ | Top 3，时间倒序 |
+| `01-home.html` | 「补充」（订阅能量） | ✓ **仅当该卡片事件执行者为当前用户本人** | 同左 | 同左 | 非本人执行的计划 **永不出现** 补充；拉 `requestSubscribeMessage` |
+
+### 2.3 字段级可见性（首页范围内）
+
+| 页面 | 字段 / 信息项 | 对他人私密计划 | 备注 |
+|------|----------------|----------------|------|
+| `01-home.html` | 药名、剂量、时间 | **不可见** | 非执行者且计划 isPrivate |
+| `01-home.html` | 是否存在异常红点 | **可聚合** | 不泄露具体私密计划标题 |
+
+## 3. 与屏幕契约的交叉引用
+
+| 页面 | 屏幕契约文件 | 控件逻辑是否已按角色分支写明 |
+|------|----------------|------------------------------|
+| 首页 | `specs/01-home-screen-contract.md` | Idle 不可点；**为自己管计划仅 Profile「日常用药计划」**（除 H-ONBOARD） |
+
+## 4. 已知差异与 DDR
+
+| 场景 | req-specs 或后端现状 | 界面当前假设 | DDR / 文档链接 |
+|------|----------------------|--------------|----------------|
+| 家人照护第二套布局 | 未在 req-specs 逐屏展开 | DDR 3.2 定义切换与红点 | `design-decisions/01-uiux-consensus-ddr.md` |
+
+## 变更记录
+
+| 日期 | 作者 | 摘要 |
+|------|------|------|
+| 2026-04-29 | — | 与契约对齐：为自己管计划统一 **Profile「日常用药计划」** |
+| 2026-04-29 | — | Idle 不可点击 |
+| 2026-04-29 | — | 补充仅限本人、进度环 idle、家人模式 |

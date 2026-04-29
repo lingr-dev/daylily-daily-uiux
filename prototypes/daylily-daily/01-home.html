@@ -383,7 +383,7 @@
         glow: 'bg-amber-400/60',
         ringColor: 'text-neutral-200', // 空白进度槽
         progress: 0,
-        clickable: true
+        clickable: false // 与 specs/01-home-screen-contract.md：两种 Idle 均不可点击
       }
     };
 
@@ -458,8 +458,6 @@
     heroButton.addEventListener('click', () => {
       if (currentState === 'ready' || currentState === 'warning') {
          setUIState('alldone');
-      } else if (currentState === 'idle') {
-         window.location.href = '04-plan-create.html'; // 跳转到为自己创建计划
       }
     });
   </script>
