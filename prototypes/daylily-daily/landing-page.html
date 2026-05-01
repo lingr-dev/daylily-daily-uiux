@@ -3,58 +3,85 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1920, initial-scale=1.0">
-    <title>萱草日签 - 家庭用药协同工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- SEO & GEO Optimization -->
+    <title>萱草日签 - 家庭用药协同工具 | 长辈友好的用药提醒小程序</title>
+    <meta name="description" content="萱草日签是一款极简的家庭用药协同工具，专为长辈设计。支持去药典化记录、零库存焦虑的按时段大按钮打卡，以及儿女云端排程代管。让吃药不再是任务，而是家人的日常牵挂。">
+    <meta name="keywords" content="家庭用药, 用药提醒, 适老化设计, 萱草日签, 父母吃药提醒, 微信小程序, 健康管家">
+    <meta name="author" content="萱草日签团队">
+
+    <!-- Open Graph for Social Media & Chatbots -->
+    <meta property="og:title" content="萱草日签 - 家庭用药协同工具">
+    <meta property="og:description" content="极简家庭用药协同工具 · 长辈友好的专属日签。让健康成为家人之间最温柔的日常。">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="萱草日签">
+
+    <!-- Structured Data (JSON-LD) for Search Engines & AI Agents -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "萱草日签",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "WeChat Mini Program",
+      "description": "一款极简的家庭用药协同工具，专为长辈设计的微信小程序。包含儿女端排程代管与长辈端按时段流大按钮打卡功能。",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "featureList": [
+        "去药典化通俗名称记录",
+        "零库存焦虑免倒计时",
+        "防御性适老高对比大按钮",
+        "家人代管云端排程"
+      ]
+    }
+    </script>
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fb1f9840c31c2302d3793ff1c13b7cdb";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+    <!-- 提示：Tailwind 运行时编译器（JIT JS）在国内公共 CDN 无官方镜像。生产环境建议执行构建流程抽离纯 CSS 以节省带宽，或继续使用官方 CDN。 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <link href="https://cdn.staticfile.net/remixicon/4.2.0/remixicon.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#FF9F68',
+                            jade: '#8F9E8B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @font-face {
-            font-family: 'NotoSerifCJKsc';
-            src: url('https://assets-persist.lovart.ai/agent-static-assets/NotoSerifCJKsc-Regular.otf') format('opentype');
-            font-weight: normal;
-        }
-
-        @font-face {
-            font-family: 'NotoSerifCJKsc';
-            src: url('https://assets-persist.lovart.ai/agent-static-assets/NotoSerifCJKsc-Bold.otf') format('opentype');
-            font-weight: bold;
-        }
-
-        @font-face {
-            font-family: 'MiSans';
-            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf') format('truetype');
-            font-weight: normal;
-        }
-
-        @font-face {
-            font-family: 'MiSans';
-            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Medium.ttf') format('truetype');
-            font-weight: 500;
-        }
-
-        @font-face {
-            font-family: 'MiSans';
-            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Semibold.ttf') format('truetype');
-            font-weight: 600;
-        }
-
         :root {
             --bg-color: #F9F7F3;
             --text-dark: #2D2926;
             --text-muted: #8C847E;
-            --accent-amber: #D4A373;
-            --accent-amber-light: #E6CBB1;
-            --accent-jade: #8F9E8B;
-            --accent-jade-light: #C0CDC0;
         }
 
         body {
-            font-family: 'MiSans', sans-serif;
+            /* 采用国内各端最安全的系统字体栈，无需下载外部字体，极致首屏速度 */
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft YaHei", Tahoma, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-dark);
             margin: 0;
             padding: 0;
-            width: 1920px;
+            width: 100%;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
@@ -63,11 +90,12 @@
         h2,
         h3,
         .serif {
-            font-family: 'NotoSerifCJKsc', serif;
+            /* 衬线体安全字体栈，适配苹果与 Windows */
+            font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
         }
 
         .bg-gradient-hero {
-            background: radial-gradient(circle at 20% 30%, rgba(212, 163, 115, 0.15) 0%, transparent 40%),
+            background: radial-gradient(circle at 20% 30%, rgba(255, 159, 104, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at 80% 70%, rgba(143, 158, 139, 0.15) 0%, transparent 40%),
                 var(--bg-color);
         }
@@ -115,13 +143,85 @@
         .mockup-container {
             position: relative;
             width: 100%;
-            height: 600px;
             background: #fff;
-            border-radius: 40px;
-            box-shadow: inset 0 0 0 12px #e5e5e5, 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+            border-radius: 32px;
+            box-shadow: inset 0 0 0 8px #e5e5e5, 0 20px 40px -10px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+        }
+
+        /* 手机模型特效 */
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            border-radius: 40px;
+            border: 12px solid #E5E0D8;
+            background: #F9F7F3;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .phone-mockup {
+                width: 340px;
+                height: 680px;
+            }
+        }
+
+        /* 灵动岛 */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 25px;
+            background: #2D2926;
+            border-radius: 20px;
+            z-index: 20;
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 159, 104, 0.4);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 20px rgba(255, 159, 104, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 159, 104, 0);
+            }
         }
     </style>
 </head>
@@ -130,94 +230,183 @@
 
     <!-- Navigation -->
     <nav
-        class="fixed top-0 left-0 right-0 w-[1920px] bg-[#F9F7F3]/90 backdrop-blur-md z-50 px-24 py-6 flex justify-between items-center border-b border-[#E5E0D8]">
+        class="fixed top-0 left-0 right-0 w-full bg-[#F9F7F3]/90 backdrop-blur-md z-50 px-6 md:px-12 lg:px-24 py-4 md:py-6 flex justify-between items-center border-b border-[#E5E0D8]">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-[#D4A373] flex items-center justify-center text-white">
-                <i class="ri-leaf-line text-2xl"></i>
-            </div>
-            <span class="text-2xl font-bold tracking-wider serif text-[#2D2926]">萱草日签</span>
+            <img src="assets/logo.jpg" alt="萱草日签 Logo"
+                class="w-8 h-8 md:w-10 md:h-10 rounded-xl object-cover shadow-sm">
+            <span class="text-xl md:text-2xl font-bold tracking-wider serif text-[#2D2926]">萱草日签</span>
         </div>
-        <div class="flex gap-10 items-center">
+        <!-- 桌面端链接 -->
+        <div class="hidden lg:flex gap-10 items-center">
             <a href="#philosophy" class="text-lg text-[#8C847E] hover:text-[#2D2926] transition">设计理念</a>
             <a href="#features" class="text-lg text-[#8C847E] hover:text-[#2D2926] transition">核心功能</a>
             <a href="#details" class="text-lg text-[#8C847E] hover:text-[#2D2926] transition">温暖细节</a>
-            <button
-                class="bg-[#2D2926] text-[#F9F7F3] px-8 py-3 rounded-full text-lg hover:bg-[#4A443E] transition btn">获取体验资格</button>
+        </div>
+        <!-- 响应式按钮 -->
+        <div>
+            <button onclick="openQRModal()"
+                class="bg-[#2D2926] text-[#F9F7F3] px-5 py-2 md:px-8 md:py-3 rounded-full text-sm md:text-lg hover:bg-[#4A443E] transition btn shadow-md">
+                <span class="hidden md:inline">获取体验资格</span>
+                <span class="md:hidden">立即体验</span>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <header
-        class="w-full min-h-screen bg-gradient-hero flex flex-col items-center justify-center pt-32 pb-20 px-24 relative overflow-hidden">
-        <div class="absolute top-40 left-32 w-64 h-64 bg-[#D4A373]/10 organic-shape blur-2xl"></div>
-        <div class="absolute bottom-40 right-32 w-80 h-80 bg-[#8F9E8B]/10 organic-shape blur-2xl"
+        class="w-full min-h-screen bg-gradient-hero flex flex-col lg:flex-row items-center justify-center pt-28 lg:pt-0 pb-16 lg:pb-0 px-6 md:px-12 lg:px-24 relative overflow-hidden">
+        <!-- 动态背景装饰 -->
+        <div
+            class="absolute top-40 left-10 lg:left-32 w-48 h-48 lg:w-64 lg:h-64 bg-brand-primary/10 organic-shape blur-2xl">
+        </div>
+        <div class="absolute bottom-20 right-10 lg:right-32 w-64 h-64 lg:w-80 lg:h-80 bg-brand-jade/10 organic-shape blur-2xl"
             style="animation-delay: 2s;"></div>
 
-        <div class="max-w-[1200px] text-center z-10">
+        <!-- 左侧：文案与转化 CTA -->
+        <div class="w-full lg:w-1/2 text-center lg:text-left z-10 pt-10 lg:pt-0">
             <div
-                class="inline-block px-6 py-2 rounded-full border border-[#D4A373]/30 text-[#D4A373] text-lg mb-8 tracking-widest bg-white/50 backdrop-blur-sm">
+                class="inline-block px-5 py-1.5 md:px-6 md:py-2 rounded-full border border-brand-primary/30 text-brand-primary text-sm md:text-lg mb-6 md:mb-8 tracking-widest bg-white/50 backdrop-blur-sm">
                 家庭用药协同工具
             </div>
-            <h1 class="text-7xl font-bold leading-tight mb-8 text-[#2D2926]">
-                让吃药不再是任务，<br>而是<span class="text-[#D4A373]">家人的日常牵挂</span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 md:mb-8 text-[#2D2926]">
+                让吃药不再是任务，<br class="hidden md:block">而是<span class="text-brand-primary">家人的日常牵挂</span>
             </h1>
-            <p class="text-3xl text-[#8C847E] mb-16 font-light tracking-wide max-w-4xl mx-auto leading-relaxed">
+            <p
+                class="text-lg md:text-2xl lg:text-3xl text-[#8C847E] mb-10 md:mb-16 font-light tracking-wide max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 极简家庭用药协同工具 · 长辈友好的专属日签
             </p>
 
-            <div class="flex items-center justify-center gap-8">
-                <button
-                    class="bg-[#D4A373] text-white px-12 py-5 rounded-full text-xl font-medium btn flex items-center gap-3 shadow-lg shadow-[#D4A373]/20">
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 md:gap-6">
+                <!-- 移动端：直接唤起小程序 -->
+                <button onclick="openQRModal()"
+                    class="lg:hidden w-full sm:w-auto bg-brand-primary text-white px-8 py-4 rounded-full text-lg font-medium btn flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/20">
+                    一键打开小程序
+                    <i class="ri-arrow-right-s-line text-xl"></i>
+                </button>
+                <!-- 桌面端：扫码展示 -->
+                <button onclick="openQRModal()"
+                    class="hidden lg:flex bg-brand-primary text-white px-10 xl:px-12 py-5 rounded-full text-xl font-medium btn items-center gap-3 shadow-lg shadow-brand-primary/20">
                     <i class="ri-wechat-line text-2xl"></i>
                     扫码体验小程序
                 </button>
-                <button
-                    class="border-2 border-[#8C847E] text-[#8C847E] px-12 py-5 rounded-full text-xl font-medium btn hover:border-[#2D2926] hover:text-[#2D2926]">
+                <!-- 通用次级按钮 -->
+                <a href="#features"
+                    class="w-full sm:w-auto border-2 border-[#8C847E] text-[#8C847E] px-8 md:px-10 xl:px-12 py-4 md:py-[18px] rounded-full text-lg md:text-xl font-medium btn hover:border-[#2D2926] hover:text-[#2D2926] bg-transparent flex justify-center items-center">
                     了解家庭代管模式
-                </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- 右侧：震撼的视觉核武器 (iPhone Mockup) -->
+        <div class="w-full lg:w-1/2 flex justify-center lg:justify-end z-10 mt-16 lg:mt-0">
+            <div class="phone-mockup float-animation flex flex-col relative">
+                <!-- 顶部导航栏 -->
+                <div
+                    class="pt-14 pb-3 px-6 text-center shrink-0 border-b border-black/5 bg-[#F9F7F3]/80 backdrop-blur-md relative z-30">
+                    <h2 class="text-base font-bold text-[#2D2926]">萱草日签</h2>
+                </div>
+
+                <!-- 模拟首页内容 -->
+                <div class="flex-1 flex flex-col items-center pt-16 px-6 relative z-10">
+                    <!-- 巨大的打卡按钮 -->
+                    <div class="relative w-48 h-48 lg:w-56 lg:h-56 flex items-center justify-center mb-6">
+                        <!-- 进度环 -->
+                        <svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none text-brand-primary opacity-30"
+                            viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="6"
+                                stroke-linecap="round" />
+                        </svg>
+
+                        <!-- 按钮本体 -->
+                        <div
+                            class="relative w-40 h-40 lg:w-44 lg:h-44 rounded-full bg-brand-primary pulse-ring flex flex-col items-center justify-center text-white shadow-xl cursor-pointer">
+                            <i class="ri-check-line text-4xl lg:text-5xl mb-1"></i>
+                            <span class="text-xl lg:text-2xl font-bold tracking-wide">我吃过了</span>
+                            <span class="text-xs lg:text-sm opacity-90 mt-1 font-medium">降压药 · 1片</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-8">
+                        <p class="text-[10px] font-bold text-brand-primary/60 tracking-widest uppercase mb-1">接下来</p>
+                        <p class="text-sm font-bold text-[#6B635B]">12:30 鱼油 · 2粒</p>
+                    </div>
+
+                    <!-- 动态列表卡片 -->
+                    <div
+                        class="w-full bg-white rounded-2xl p-4 shadow-sm border border-neutral-100/80 mb-3 flex items-start">
+                        <div
+                            class="w-10 h-10 rounded-full border border-neutral-100 bg-[#ccfbf1] flex items-center justify-center text-brand-jade font-bold text-lg shrink-0">
+                            奶
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-sm text-[#2D2926]">奶奶</span>
+                                <span class="text-[10px] font-bold text-amber-500">漏服</span>
+                            </div>
+                            <div class="text-[11px] text-[#8C847E] mt-0.5">08:00 降压药</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部模拟导航 -->
+                <div
+                    class="absolute bottom-0 w-full h-16 bg-[#F9F7F3]/95 backdrop-blur-md border-t border-black/5 flex justify-around items-center px-4 z-30 pb-2">
+                    <i class="ri-calendar-2-line text-2xl text-[#8C847E]"></i>
+                    <div class="flex flex-col items-center text-brand-primary">
+                        <i class="ri-home-5-fill text-2xl"></i>
+                    </div>
+                    <i class="ri-user-smile-line text-2xl text-[#8C847E]"></i>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- Philosophy Section -->
-    <section id="philosophy" class="w-full py-32 px-24 bg-white relative">
-        <div class="max-w-[1600px] mx-auto">
-            <div class="text-center mb-24">
-                <h2 class="text-5xl font-bold text-[#2D2926] mb-6 serif">我们做的不是加法，是减法</h2>
-                <div class="w-24 h-1 bg-[#D4A373] mx-auto rounded-full"></div>
+    <section id="philosophy" class="w-full py-20 lg:py-32 px-6 md:px-12 lg:px-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="text-center mb-16 lg:mb-24">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2D2926] mb-4 md:mb-6 serif">我们做的不是加法，是减法
+                </h2>
+                <div class="w-16 md:w-24 h-1 bg-brand-primary mx-auto rounded-full"></div>
             </div>
 
-            <div class="grid grid-cols-3 gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
                 <!-- Card 1 -->
-                <div class="bg-[#F9F7F3] rounded-[40px] p-12 card-hover soft-shadow border border-[#E5E0D8]/50">
-                    <div class="w-20 h-20 rounded-full bg-white flex items-center justify-center mb-8 shadow-sm">
-                        <i class="ri-translate-2 text-4xl text-[#8F9E8B]"></i>
+                <div
+                    class="bg-[#F9F7F3] rounded-[30px] lg:rounded-[40px] p-8 lg:p-12 card-hover soft-shadow border border-[#E5E0D8]/50 text-center md:text-left">
+                    <div
+                        class="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white flex items-center justify-center mb-6 lg:mb-8 shadow-sm mx-auto md:mx-0">
+                        <i class="ri-translate-2 text-3xl lg:text-4xl text-brand-jade"></i>
                     </div>
-                    <h3 class="text-3xl font-bold text-[#2D2926] mb-6">去药典化</h3>
-                    <p class="text-xl text-[#8C847E] leading-relaxed">
-                        摒弃晦涩的医学名词，支持使用"红盒子药"、"白片片"等长辈习惯的通俗叫法。拒绝严肃医疗带来的压迫感，用日常的语言沟通。
+                    <h3 class="text-2xl lg:text-3xl font-bold text-[#2D2926] mb-4 lg:mb-6">去药典化</h3>
+                    <p class="text-base lg:text-xl text-[#8C847E] leading-relaxed">
+                        摒弃晦涩的医学名词，支持使用"红盒子药"、"白片片"等长辈习惯的通俗叫法。拒绝严肃医疗带来的压迫感，用日常语言沟通。
                     </p>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-[#F9F7F3] rounded-[40px] p-12 card-hover soft-shadow border border-[#E5E0D8]/50">
-                    <div class="w-20 h-20 rounded-full bg-white flex items-center justify-center mb-8 shadow-sm">
-                        <i class="ri-battery-low-line text-4xl text-[#D4A373]"></i>
+                <div
+                    class="bg-[#F9F7F3] rounded-[30px] lg:rounded-[40px] p-8 lg:p-12 card-hover soft-shadow border border-[#E5E0D8]/50 text-center md:text-left">
+                    <div
+                        class="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white flex items-center justify-center mb-6 lg:mb-8 shadow-sm mx-auto md:mx-0">
+                        <i class="ri-battery-low-line text-3xl lg:text-4xl text-brand-primary"></i>
                     </div>
-                    <h3 class="text-3xl font-bold text-[#2D2926] mb-6">零库存焦虑</h3>
-                    <p class="text-xl text-[#8C847E] leading-relaxed">
+                    <h3 class="text-2xl lg:text-3xl font-bold text-[#2D2926] mb-4 lg:mb-6">零库存焦虑</h3>
+                    <p class="text-base lg:text-xl text-[#8C847E] leading-relaxed">
                         刻意不记录剩余药量，不设吃药倒计时。避免制造"还剩多少天药"的心理负担，让每一次服药都只关注当下的健康关怀。
                     </p>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="bg-[#F9F7F3] rounded-[40px] p-12 card-hover soft-shadow border border-[#E5E0D8]/50">
-                    <div class="w-20 h-20 rounded-full bg-white flex items-center justify-center mb-8 shadow-sm">
-                        <i class="ri-eye-line text-4xl text-[#8C847E]"></i>
+                <div
+                    class="bg-[#F9F7F3] rounded-[30px] lg:rounded-[40px] p-8 lg:p-12 card-hover soft-shadow border border-[#E5E0D8]/50 text-center md:text-left">
+                    <div
+                        class="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white flex items-center justify-center mb-6 lg:mb-8 shadow-sm mx-auto md:mx-0">
+                        <i class="ri-eye-line text-3xl lg:text-4xl text-[#8C847E]"></i>
                     </div>
-                    <h3 class="text-3xl font-bold text-[#2D2926] mb-6">防御性适老</h3>
-                    <p class="text-xl text-[#8C847E] leading-relaxed">
-                        全屏大热区设计，消灭所有隐藏手势和复杂交互。采用无障碍的高视觉对比度，确保长辈在视力衰退的情况下也能轻松看清。
+                    <h3 class="text-2xl lg:text-3xl font-bold text-[#2D2926] mb-4 lg:mb-6">防御性适老</h3>
+                    <p class="text-base lg:text-xl text-[#8C847E] leading-relaxed">
+                        全屏大热区设计，消灭所有隐藏手势和复杂交互。采用无障碍的高视觉对比度，确保长辈在视力衰退情况下也能轻松操作。
                     </p>
                 </div>
             </div>
@@ -225,37 +414,43 @@
     </section>
 
     <!-- How It Works Section -->
-    <section id="features" class="w-full py-32 px-24 bg-[#F9F7F3]">
-        <div class="max-w-[1600px] mx-auto">
-            <div class="grid grid-cols-2 gap-24 items-center">
+    <section id="features" class="w-full py-20 lg:py-32 px-6 md:px-12 lg:px-24 bg-[#F9F7F3]">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                 <!-- Children's Side -->
-                <div class="space-y-12">
-                    <div>
+                <div class="space-y-8 lg:space-y-12">
+                    <div class="text-center lg:text-left">
                         <span
-                            class="inline-block px-4 py-1 bg-[#8F9E8B]/20 text-[#8F9E8B] rounded-full text-lg mb-4">儿女端</span>
-                        <h2 class="text-5xl font-bold text-[#2D2926] mb-6 serif">30秒建好用药计划</h2>
-                        <p class="text-2xl text-[#8C847E] leading-relaxed">
-                            无需父母繁琐操作，儿女在云端轻松排程。<br>添加药品、设定时段，一键同步给长辈。
+                            class="inline-block px-4 py-1.5 bg-brand-jade/20 text-brand-jade font-bold rounded-full text-sm md:text-lg mb-4">儿女端配置</span>
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2D2926] mb-4 md:mb-6 serif">
+                            30秒建好用药计划</h2>
+                        <p class="text-lg lg:text-2xl text-[#8C847E] leading-relaxed">
+                            无需父母繁琐操作，儿女在云端轻松排程。<br class="hidden lg:block">添加药品、设定时段，一键同步给长辈。
                         </p>
                     </div>
 
                     <div class="mockup-container p-6 bg-[#F4F1EA]">
-                        <div class="w-full flex justify-between items-center mb-8">
-                            <span class="text-xl font-bold">为妈妈添加用药计划</span>
-                            <i class="ri-close-line text-2xl"></i>
+                        <div class="w-full flex justify-between items-center mb-6">
+                            <span class="text-lg lg:text-xl font-bold text-[#2D2926]">为妈妈添加用药计划</span>
+                            <i class="ri-close-line text-2xl text-[#8C847E]"></i>
                         </div>
                         <div class="space-y-4">
                             <div class="bg-white p-5 rounded-2xl shadow-sm">
-                                <label class="text-sm text-[#8C847E] block mb-2">药怎么称呼？</label>
-                                <div class="text-lg">降压药（红盒子那瓶）</div>
+                                <label class="text-xs lg:text-sm text-[#8C847E] font-bold block mb-2">药怎么称呼？</label>
+                                <div class="text-base lg:text-lg font-bold text-[#2D2926]">降压药（红盒子那瓶）</div>
                             </div>
                             <div class="bg-white p-5 rounded-2xl shadow-sm">
-                                <label class="text-sm text-[#8C847E] block mb-2">什么时段吃？</label>
-                                <div class="flex gap-3">
+                                <label class="text-xs lg:text-sm text-[#8C847E] font-bold block mb-3">什么时候吃？</label>
+                                <div class="flex flex-wrap gap-2">
                                     <span
-                                        class="px-4 py-2 bg-[#D4A373]/10 text-[#D4A373] rounded-lg border border-[#D4A373]">早饭后</span>
-                                    <span class="px-4 py-2 bg-gray-50 text-gray-400 rounded-lg">午饭后</span>
-                                    <span class="px-4 py-2 bg-gray-50 text-gray-400 rounded-lg">晚饭后</span>
+                                        class="px-4 py-2 bg-brand-primary text-white font-bold rounded-lg border border-brand-primary text-sm shadow-sm">☀️
+                                        晨间</span>
+                                    <span
+                                        class="px-4 py-2 bg-white text-[#8C847E] font-bold rounded-lg border border-neutral-200 text-sm">🍲
+                                        午间</span>
+                                    <span
+                                        class="px-4 py-2 bg-white text-[#8C847E] font-bold rounded-lg border border-neutral-200 text-sm">🌙
+                                        晚间</span>
                                 </div>
                             </div>
                         </div>
@@ -263,33 +458,34 @@
                 </div>
 
                 <!-- Elderly Side -->
-                <div class="space-y-12">
-                    <div>
+                <div class="space-y-8 lg:space-y-12">
+                    <div class="text-center lg:text-left">
                         <span
-                            class="inline-block px-4 py-1 bg-[#D4A373]/20 text-[#D4A373] rounded-full text-lg mb-4">长辈端</span>
-                        <h2 class="text-5xl font-bold text-[#2D2926] mb-6 serif">按时段流的大按钮打卡</h2>
-                        <p class="text-2xl text-[#8C847E] leading-relaxed">
-                            抛弃时间线，按"早、中、晚"自然时段展示。<br>只需点击一个醒目的大按钮，即可完成打卡。
+                            class="inline-block px-4 py-1.5 bg-brand-primary/20 text-brand-primary font-bold rounded-full text-sm md:text-lg mb-4">长辈端操作</span>
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2D2926] mb-4 md:mb-6 serif">
+                            按时段流的大按钮打卡</h2>
+                        <p class="text-lg lg:text-2xl text-[#8C847E] leading-relaxed">
+                            抛弃时间线，按"早、中、晚"自然时段展示。<br class="hidden lg:block">只需点击一个醒目的大按钮，即可完成打卡。
                         </p>
                     </div>
 
-                    <div class="mockup-container p-6 bg-white">
-                        <div class="text-center py-6 border-b border-gray-100 mb-6">
-                            <span class="text-xl text-[#8C847E]">今天 · 早上</span>
-                            <div class="text-4xl font-bold mt-2 text-[#2D2926]">8:30</div>
+                    <div class="mockup-container p-6 bg-white border border-[#E5E0D8]">
+                        <div class="text-center py-4 lg:py-6 border-b border-gray-100 mb-6">
+                            <span class="text-base lg:text-xl text-brand-primary font-bold">今天 · 早上</span>
+                            <div class="text-3xl lg:text-4xl font-bold mt-2 text-[#2D2926] tracking-tight">8:30</div>
                         </div>
 
                         <div
-                            class="bg-[#F9F7F3] rounded-[30px] p-8 flex flex-col items-center justify-center flex-grow mb-6 border border-[#E5E0D8]">
+                            class="bg-[#F9F7F3] rounded-[24px] lg:rounded-[30px] p-6 lg:p-8 flex flex-col items-center justify-center flex-grow mb-2 border border-[#E5E0D8]">
                             <div
-                                class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm">
-                                <i class="ri-capsule-line text-5xl text-[#D4A373]"></i>
+                                class="w-16 h-16 lg:w-20 lg:h-20 bg-white rounded-full flex items-center justify-center mb-4 lg:mb-6 shadow-sm border border-black/5">
+                                <i class="ri-capsule-line text-3xl lg:text-4xl text-brand-primary"></i>
                             </div>
-                            <h3 class="text-2xl font-bold mb-2">降压药（红盒子）</h3>
-                            <p class="text-xl text-[#8C847E] mb-8">由女儿小小萱管理</p>
+                            <h3 class="text-xl lg:text-2xl font-bold mb-2 text-[#2D2926]">降压药（红盒子）</h3>
+                            <p class="text-sm lg:text-base text-[#8C847E] mb-6 font-medium">由女儿小小萱管理</p>
 
                             <button
-                                class="w-full bg-[#8F9E8B] text-white py-6 rounded-[24px] text-2xl font-bold shadow-lg shadow-[#8F9E8B]/30 hover:opacity-90 transition">
+                                class="w-full bg-brand-jade text-white py-4 lg:py-5 rounded-[20px] text-xl font-bold shadow-lg shadow-brand-jade/30 hover:scale-[0.98] transition-transform active:opacity-90">
                                 我已吃过
                             </button>
                         </div>
@@ -300,66 +496,171 @@
     </section>
 
     <!-- Details Section -->
-    <section id="details" class="w-full py-32 px-24 bg-white relative">
-        <div class="max-w-[1600px] mx-auto">
-            <div class="text-center mb-24">
-                <h2 class="text-5xl font-bold text-[#2D2926] mb-6 serif">藏在细节里的温柔</h2>
-                <div class="w-24 h-1 bg-[#8F9E8B] mx-auto rounded-full"></div>
+    <section id="details" class="w-full py-20 lg:py-32 px-6 md:px-12 lg:px-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="text-center mb-16 lg:mb-24">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2D2926] mb-4 md:mb-6 serif">藏在细节里的温柔</h2>
+                <div class="w-16 md:w-24 h-1 bg-brand-jade mx-auto rounded-full"></div>
             </div>
 
-            <div class="grid grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                 <div
-                    class="bg-[#F9F7F3] rounded-[40px] p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-[#8F9E8B]"></div>
-                    <i class="ri-sun-cloudy-line text-6xl text-[#8F9E8B] mb-8"></i>
-                    <h3 class="text-3xl font-bold text-[#2D2926] mb-6">给药箱减负</h3>
-                    <div class="bg-white px-8 py-6 rounded-2xl shadow-sm border border-[#E5E0D8] inline-block mb-6">
-                        <span class="text-2xl text-[#8C847E] italic">"午间没药，好好休息吧 😊"</span>
+                    class="bg-[#F9F7F3] rounded-[30px] lg:rounded-[40px] p-10 lg:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group border border-[#E5E0D8]/50 hover:shadow-xl transition-shadow duration-500">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-brand-jade"></div>
+                    <i
+                        class="ri-sun-cloudy-line text-5xl lg:text-6xl text-brand-jade mb-6 lg:mb-8 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-2xl lg:text-3xl font-bold text-[#2D2926] mb-4 lg:mb-6">给药箱减负</h3>
+                    <div
+                        class="bg-white px-6 py-4 lg:px-8 lg:py-6 rounded-2xl shadow-sm border border-[#E5E0D8] inline-block mb-6">
+                        <span class="text-lg lg:text-xl text-[#8C847E] italic font-medium">"午间没药，好好休息吧 😊"</span>
                     </div>
-                    <p class="text-xl text-[#8C847E] max-w-md">当某个时段无需服药时，我们用一句温暖的问候替代空白，减轻吃药带来的持续心理压力。</p>
+                    <p class="text-base lg:text-lg text-[#8C847E] max-w-md leading-relaxed">
+                        当某个时段无需服药时，我们用一句温暖的问候替代空白，减轻吃药带来的持续心理压力。</p>
                 </div>
 
                 <div
-                    class="bg-[#F9F7F3] rounded-[40px] p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-[#D4A373]"></div>
-                    <i class="ri-parent-line text-6xl text-[#D4A373] mb-8"></i>
-                    <h3 class="text-3xl font-bold text-[#2D2926] mb-6">家人代管标识</h3>
-                    <div class="bg-white px-8 py-6 rounded-2xl shadow-sm border border-[#E5E0D8] inline-block mb-6">
-                        <span class="text-2xl text-[#8C847E] italic">"由女儿小小萱为您管理"</span>
+                    class="bg-[#F9F7F3] rounded-[30px] lg:rounded-[40px] p-10 lg:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group border border-[#E5E0D8]/50 hover:shadow-xl transition-shadow duration-500">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-brand-primary"></div>
+                    <i
+                        class="ri-parent-line text-5xl lg:text-6xl text-brand-primary mb-6 lg:mb-8 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-2xl lg:text-3xl font-bold text-[#2D2926] mb-4 lg:mb-6">家人代管标识</h3>
+                    <div
+                        class="bg-white px-6 py-4 lg:px-8 lg:py-6 rounded-2xl shadow-sm border border-[#E5E0D8] inline-block mb-6">
+                        <span class="text-lg lg:text-xl text-[#8C847E] italic font-medium">"由女儿小小萱为您管理"</span>
                     </div>
-                    <p class="text-xl text-[#8C847E] max-w-md">明确显示药品计划的制定者，让长辈知道每一次提醒背后，都是儿女实在的牵挂。</p>
+                    <p class="text-base lg:text-lg text-[#8C847E] max-w-md leading-relaxed">
+                        明确显示药品计划的制定者，让长辈知道每一次提醒背后，都是儿女实实在在的牵挂。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="w-full bg-[#2D2926] text-[#F9F7F3] py-20 px-24 text-center">
-        <div class="max-w-[1200px] mx-auto">
-            <div class="w-16 h-16 rounded-full bg-[#D4A373] flex items-center justify-center text-white mx-auto mb-8">
-                <i class="ri-leaf-line text-3xl"></i>
+    <!-- Bottom CTA Section (新增终极转化漏斗) -->
+    <section class="w-full py-20 lg:py-28 px-6 md:px-12 bg-white relative overflow-hidden flex justify-center">
+        <div
+            class="w-full max-w-[1200px] bg-[#F9F7F3] rounded-[40px] lg:rounded-[60px] p-12 lg:p-24 relative overflow-hidden text-center border border-[#E5E0D8]/60 shadow-sm">
+            <!-- 背景装饰 -->
+            <div class="absolute inset-0 opacity-[0.03]"
+                style="background-image: radial-gradient(circle at 2px 2px, #2D2926 1px, transparent 0); background-size: 32px 32px;">
             </div>
-            <h2 class="text-4xl font-bold mb-6 serif tracking-wider">萱草日签</h2>
-            <p class="text-2xl text-[#8C847E] mb-12 font-light">让健康成为家人之间最温柔的日常</p>
+            <div
+                class="absolute -top-24 left-1/2 -translate-x-1/2 w-full max-w-2xl h-64 bg-brand-primary/10 blur-3xl rounded-full">
+            </div>
 
-            <div class="w-full h-px bg-[#4A443E] mb-12"></div>
+            <div class="relative z-10 max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 md:mb-8 serif tracking-wide text-[#2D2926]">
+                    准备好为家人创建第一份关怀了吗？</h2>
+                <p class="text-lg md:text-2xl text-[#8C847E] mb-10 md:mb-12 font-light">无需下载 App，微信内一键开启私人用药管家。</p>
+                <button onclick="openQRModal()"
+                    class="bg-brand-primary text-white px-10 md:px-14 py-4 md:py-6 rounded-full text-lg md:text-xl font-bold btn shadow-xl shadow-brand-primary/20 hover:scale-[1.02] active:scale-95 transition-transform flex items-center justify-center mx-auto gap-3">
+                    <i class="ri-wechat-fill text-2xl"></i>
+                    免费体验萱草日签
+                </button>
+                <p class="text-sm text-[#8C847E]/60 mt-6 font-medium">扫码或点击上方按钮直接拉起微信小程序</p>
+            </div>
+        </div>
+    </section>
 
-            <div class="flex justify-between items-center text-lg text-[#8C847E]">
-                <p>&copy; 2024 萱草日签. All rights reserved.</p>
-                <div class="flex gap-8">
+    <!-- Footer -->
+    <footer class="w-full bg-[#2D2926] text-[#F9F7F3] py-16 lg:py-20 px-6 md:px-12 lg:px-24 text-center">
+        <div class="max-w-[1200px] mx-auto">
+            <img src="assets/logo.jpg" alt="萱草日签 Logo"
+                class="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl object-cover shadow-sm mx-auto mb-6 lg:mb-8">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 serif tracking-wider">萱草日签</h2>
+            <p class="text-xl lg:text-2xl text-[#8C847E] mb-10 lg:mb-12 font-light">让健康成为家人之间最温柔的日常</p>
+
+            <div class="w-full h-px bg-[#4A443E] mb-10 lg:mb-12"></div>
+
+            <div class="flex flex-col items-center text-sm lg:text-base text-[#8C847E] gap-6 lg:gap-8">
+                <!-- 底部导航链接 -->
+                <div class="flex flex-wrap justify-center gap-6 lg:gap-10">
                     <a href="#" class="hover:text-white transition">关于我们</a>
                     <a href="#" class="hover:text-white transition">隐私政策</a>
                     <a href="#" class="hover:text-white transition">用户协议</a>
+                </div>
+
+                <!-- 版权与备案信息 -->
+                <div
+                    class="flex flex-wrap justify-center items-center gap-3 lg:gap-4 text-xs lg:text-sm text-[#8C847E]/80">
+                    <p>&copy; 2026 萱草日签. All rights reserved.</p>
+                    <span class="hidden lg:inline text-[#4A443E]">|</span>
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-white transition">鄂ICP备2024063300号-1</a>
+                    <span class="hidden lg:inline text-[#4A443E]">|</span>
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-white transition">小程序备案：鄂ICP备2024063300号-2X</a>
+                    <span class="hidden lg:inline text-[#4A443E]">|</span>
+                    <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42011102005624"
+                        target="_blank" rel="noopener noreferrer"
+                        class="flex items-center gap-1 hover:text-white transition group">
+                        <img alt="公安备案图标" src="https://img-xs.lingerer.cn/info/beian-mps.png" width="14" height="14"
+                            class="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity" />
+                        鄂公网安备42011102005624号
+                    </a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script defer
-        src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516"
-        integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg=="
-        data-cf-beacon='{"version":"2024.11.0","token":"aa50fec79b214c0582a0bc0d66f75f48","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
-        crossorigin="anonymous"></script>
+    <!-- 全局二维码弹窗 Modal -->
+    <div id="qr-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <!-- 背景遮罩 -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer" onclick="closeQRModal()"></div>
+        <!-- 弹窗主体 -->
+        <div class="relative bg-[#F9F7F3] w-[90%] max-w-[400px] rounded-[32px] p-8 md:p-12 flex flex-col items-center text-center shadow-2xl transform scale-95 transition-transform duration-300"
+            id="qr-modal-content">
+            <button onclick="closeQRModal()"
+                class="absolute top-6 right-6 w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#8C847E] hover:text-[#2D2926] hover:bg-neutral-100 transition-colors shadow-sm">
+                <i class="ri-close-line text-xl"></i>
+            </button>
+
+            <div
+                class="w-16 h-16 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-6">
+                <i class="ri-wechat-line text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-[#2D2926] mb-3 serif">微信扫码体验</h3>
+            <p class="text-[#8C847E] mb-8">使用微信扫描下方二维码，<br>即刻体验萱草日签小程序。</p>
+
+            <!-- 真实二维码图片 -->
+            <div
+                class="w-48 h-48 bg-white rounded-2xl shadow-inner border border-[#E5E0D8] flex items-center justify-center p-2 mb-6 relative overflow-hidden group">
+                <div class="absolute inset-0 border-4 border-brand-primary/20 rounded-2xl m-2 z-10 pointer-events-none">
+                </div>
+                <img src="assets/qrcode.png" alt="小程序二维码" class="w-full h-full object-contain relative z-0">
+            </div>
+
+            <p class="text-xs text-brand-primary/80 font-bold tracking-wider uppercase">内测版仅限受邀用户</p>
+        </div>
+    </div>
+
+    <script>
+        const qrModal = document.getElementById('qr-modal');
+        const qrContent = document.getElementById('qr-modal-content');
+
+        function openQRModal() {
+            qrModal.classList.remove('hidden');
+            // 触发浏览器重绘以生效动画
+            void qrModal.offsetWidth;
+            qrModal.classList.remove('opacity-0');
+            qrContent.classList.remove('scale-95');
+            qrContent.classList.add('scale-100');
+            document.body.style.overflow = 'hidden'; // 防止穿透滚动
+        }
+
+        function closeQRModal() {
+            qrModal.classList.add('opacity-0');
+            qrContent.classList.remove('scale-100');
+            qrContent.classList.add('scale-95');
+
+            // 等待动画结束后隐藏
+            setTimeout(() => {
+                qrModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+    </script>
+
 </body>
 
 </html>
