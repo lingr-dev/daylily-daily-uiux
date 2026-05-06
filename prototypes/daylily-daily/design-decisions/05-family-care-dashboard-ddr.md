@@ -69,5 +69,21 @@
 - **情绪出口**：只有提供了清晰的收口机制，大盘才能真正被清空，用户才能体验到“岁月静好”的空状态带来的情绪奖励。
 
 ---
-*Created: 2026-04-09 (Updated: 2026-05-03)*
+
+## 7. 跨组聚合归属展示 (Cross-Group Attribution Slot)
+**[决策背景]**
+照护者可能同时是多个家庭组的成员（接受多份邀请，或 Pro 用户后续可创建多个家庭组）。同一面板里来自不同家庭组的异常卡片若不区分归属，会出现"同名家人来自不同组"的混淆；早期实现将组名与成员名拼成 `{group} • {name}` 单行展示，在窄屏与长组名场景下极易换行，破坏视觉节奏。
+
+**[设计共识]**
+- **独立 kicker 槽位**：在成员主名（`text-[15px] font-bold`）上方放一行小号弱灰文本（`text-[10px] font-semibold text-neutral-400 leading-tight tracking-wide`），承载家庭组归属，独立于主名行，杜绝挤压换行。
+- **超长截断**：`truncate max-w-[140px]`，超出以省略号收口；不允许换行。
+- **何时渲染**：
+  - **非默认家庭** → 始终渲染该组的 `groupName`。
+  - **默认家庭 + 受邀者视角** → 命名层 `translateGroupDisplayName` 翻译为"{owner}的家庭"（DDR 11 §3.2 ③），渲染翻译后的字符串。
+  - **默认家庭 + owner 视角** → 仍渲染原始 `groupName`（不再像早期实现那样空着）；为后续 Pro 多组场景预留视觉一致性，避免"用户从单组升级到多组时卡片信息密度突变"。
+  - **自身事件**（`alert.subjectId === viewer.defaultSubject.id`） → kicker 不渲染（DOM 不占位），主名直接显示"我"，避免冗余。
+- **命名规则统一引用**：成员主名与组名的全部回退分支都走 [`design-specs/20-runtimes/miniprogram/display-name-layer.md`](../../../../design-specs/20-runtimes/miniprogram/display-name-layer.md) 中定义的 `resolveSubjectDisplayName` / `translateGroupDisplayName`，本 DDR 不重复回退树定义；规则源在 DDR 11 §3 与 DS-40-authz-001 §5。
+
+---
+*Created: 2026-04-09 (Updated: 2026-05-06)*
 *Applies to: prototypes/daylily-daily/05-family-exceptions.html & 01-home.html 路径精简*
