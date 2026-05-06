@@ -86,6 +86,13 @@
 
       <!-- 3. 花名册身份网格 -->
       <section class="mb-10 px-4">
+        
+        <!-- 核心新增：直接邀请微信家人 (关系优先) -->
+        <button class="w-full bg-white border border-brand-primary/20 hover:border-brand-primary/50 text-brand-primary font-bold py-3.5 rounded-2xl shadow-sm mb-4 active:scale-[0.98] transition-all flex items-center justify-center" onclick="alert('前端演练：触发微信原生分享卡片，邀请亲友免建计划直接入组')">
+           <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M8.5 13.5c-2.48 0-4.5-1.79-4.5-4s2.02-4 4.5-4 4.5 1.79 4.5 4-2.02 4-4.5 4zm6.5 6c-2.21 0-4-1.34-4-3s1.79-3 4-3 4 1.34 4 3-1.79 3-4 3z"/></svg>
+           邀请微信家人入组
+        </button>
+
         <div class="bg-white rounded-[24px] shadow-brand-sm border border-black/5 overflow-hidden divide-y divide-neutral-50 relative">
            
            <!-- 自己群主 (不可被滑动) -->
@@ -146,9 +153,9 @@
                       <span class="inline-block mt-1 text-[9px] font-bold text-orange-600 bg-orange-50 border border-orange-100 px-2 py-0.5 rounded">仅您代管打卡</span>
                     </div>
                  </div>
-                 <!-- 邀请升维按钮 -->
+                 <!-- 邀请升维按钮 (强调合并) -->
                  <button class="bg-[#07C160] text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm active:scale-[0.95] transition-transform" onclick="event.stopPropagation(); showShadowPopup('爷爷')">
-                    邀请接管
+                    邀请微信绑定 (记录合并)
                  </button>
               </div>
            </div>
@@ -192,18 +199,18 @@
       </section>
 
       <!-- 5. 危险区：解散或退出 -->
-      <section class="px-4 flex flex-col items-center mt-24 opacity-60 hover:opacity-100 transition-opacity">
+      <section class="px-4 flex flex-col items-center mt-24 mb-10 transition-opacity">
          <!-- 主理人按钮：解散 -->
-         <button id="btn-admin-danger" class="w-[85%] border-2 border-feedback-warning text-feedback-warning font-bold text-[15px] py-3.5 rounded-full hover:bg-feedback-warning/10 active:scale-[0.98] transition-all" onclick="showDisbandPopup()">
+         <button id="btn-admin-danger" class="w-[85%] border-2 border-feedback-warning text-feedback-warning font-bold text-[15px] py-3.5 rounded-full hover:bg-feedback-warning/10 active:scale-[0.98] transition-all opacity-60 hover:opacity-100" onclick="showDisbandPopup()">
            解散该家庭组
          </button>
-         <span id="hint-admin-danger" class="text-[10px] text-neutral-400 mt-3 font-medium">解散后，相关的用药提醒与共享记录也将随之停止</span>
+         <span id="hint-admin-danger" class="text-[10px] text-neutral-400 mt-3 font-medium opacity-60">解散后，相关的用药提醒与共享记录也将随之停止</span>
          
-         <!-- 成员按钮：退出 -->
-         <button id="btn-member-danger" class="hidden w-[85%] border-2 border-neutral-300 text-neutral-500 font-bold text-[15px] py-3.5 rounded-full hover:bg-neutral-200 active:scale-[0.98] transition-all" onclick="showLeavePopup()">
-           退出该照护组
+         <!-- 成员按钮：退出 (更加显眼) -->
+         <button id="btn-member-danger" class="hidden w-[85%] bg-neutral-100 border-2 border-neutral-200 text-[#4A443F] font-bold text-[15px] py-3.5 rounded-full hover:bg-neutral-200 active:scale-[0.98] transition-all shadow-sm" onclick="showLeavePopup()">
+           主动退出该照护组
          </button>
-         <span id="hint-member-danger" class="hidden text-[10px] text-neutral-400 mt-3 font-medium">退出后将不可再看本群数据，随时可重新被邀请加入</span>
+         <span id="hint-member-danger" class="hidden text-[10px] text-[#8C847E] mt-3 font-medium text-center">主动退出后，您将不再向该组广播自己的健康动态。<br>随时可重新被邀请加入。</span>
       </section>
     </div>
 
